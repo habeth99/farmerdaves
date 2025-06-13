@@ -12,7 +12,7 @@ export default function Home() {
           Sign up and get a free bigfoot statue!
         </p>
         
-        <Link href="/signup">
+        <Link href="/dashboard">
           <button className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-lg text-lg transition-colors duration-200 shadow-lg hover:shadow-xl">
             Sign Up
           </button>
