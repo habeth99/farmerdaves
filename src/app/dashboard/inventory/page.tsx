@@ -1,8 +1,32 @@
 'use client';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 export default function Inventory() {
   const router = useRouter();
+
+  const cards = [
+    {
+      image: '/bigfootimage.jpg',
+      name: 'Bigfoot Statue',
+      height: '4ft',
+      price: '$350'
+    },
+    {
+      image: 'URL_TO_IMAGE_2',
+      name: 'Gnome Statue',
+      height: '1ft',
+      price: '$70'
+    },
+    {
+      image: 'URL_TO_IMAGE_3',
+      name: 'Dragon Statue',
+      height: '3ft',
+      price: '$150'
+    },
+  
+    // ...more cards
+  ];
 
   return (
     <div className="min-h-screen bg-[var(--background)] p-8">
@@ -17,49 +41,17 @@ export default function Inventory() {
           </button>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Hardcoded inventory cards - to be made dynamic later */}
-          <div className="bg-[var(--color-brown)] p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold text-[var(--color-olive)] mb-3">Fresh Vegetables</h3>
-            <ul className="text-[var(--color-olive)] space-y-2">
-              <li>• Tomatoes - 50 lbs</li>
-              <li>• Carrots - 30 lbs</li>
-              <li>• Lettuce - 20 heads</li>
-              <li>• Potatoes - 100 lbs</li>
-            </ul>
-          </div>
-          
-          <div className="bg-[var(--color-brown)] p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold text-[var(--color-olive)] mb-3">Farm Equipment</h3>
-            <ul className="text-[var(--color-olive)] space-y-2">
-              <li>• Tractors - 3 available</li>
-              <li>• Plows - 5 units</li>
-              <li>• Irrigation systems - 2 sets</li>
-              <li>• Harvesting tools - 15 pieces</li>
-            </ul>
-          </div>
-          
-          <div className="bg-[var(--color-brown)] p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold text-[var(--color-olive)] mb-3">Bigfoot Statues</h3>
-            <ul className="text-[var(--color-olive)] space-y-2">
-              <li>• Small statues - 25 available</li>
-              <li>• Medium statues - 15 available</li>
-              <li>• Large statues - 8 available</li>
-              <li>• Premium statues - 3 available</li>
-            </ul>
-          </div>
-        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-          {[1, 2, 3].map((_, idx) => (
-            <div key={idx} className="bg-[var(--color-brown)] p-6 rounded-lg shadow-md flex flex-col items-center">
+          {cards.map((card, idx) => (
+            <div key={idx} className="bg-[var(--color-sage)] p-6 rounded-lg shadow-2xl flex flex-col items-center">
               <img
-                src="https://via.placeholder.com/150"
-                alt="Example Item"
-                className="w-full h-32 object-cover rounded-md mb-4"
+                src={card.image}
+                alt={card.name}
+                className="w-full aspect-square object-contain rounded-md mb-4 bg-white"
               />
-              <div className="text-xl font-semibold text-[var(--color-olive)] mb-1">Example Item</div>
-              <div className="text-[var(--color-olive)] mb-1">5ft</div>
-              <div className="text-[var(--color-olive)] font-bold">$200</div>
+              <div className="text-lg font-semibold text-[var(--color-borneo)] mb-1">{card.name}</div>
+              <div className="text-[var(--color-pine)] mb-1">{card.height}</div>
+              <div className="text-[var(--color-pine)] font-bold">{card.price}</div>
             </div>
           ))}
         </div>
