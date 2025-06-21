@@ -3,6 +3,7 @@ export interface Item {
   name: string;
   price: number;
   size: number; // Changed from string to number to match your database
+  image?: string; // Adding image field for inventory display
   createdAt?: Date;
   updatedAt?: Date;
 }

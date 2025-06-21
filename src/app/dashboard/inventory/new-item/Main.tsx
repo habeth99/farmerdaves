@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createItem } from '../../../../lib/itemService';
+import { createItem } from '../../../../utils/itemService';
 
 export default function NewItemMain() {
   const router = useRouter();
