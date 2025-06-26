@@ -45,7 +45,7 @@ export default function Sidebar() {
             <Link href="/" className="text-[var(--color-borneo)] hover:underline" onClick={() => setIsOpen(false)}>Home</Link>
             <Link href="/dashboard" className="text-[var(--color-borneo)] hover:underline" onClick={() => setIsOpen(false)}>Dashboard</Link>
             <Link href="/dashboard/inventory" className="text-[var(--color-borneo)] hover:underline" onClick={() => setIsOpen(false)}>Inventory</Link>
-            <Link href="/dashboard/signup" className="text-[var(--color-borneo)] hover:underline" onClick={() => setIsOpen(false)}>Sign Up</Link>
+            <Link href="/dashboard/profile" className="text-[var(--color-borneo)] hover:underline" onClick={() => setIsOpen(false)}>Profile</Link>
             {/* Add more links as needed */}
           </nav>
         </div>
