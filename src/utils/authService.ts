@@ -18,6 +18,18 @@ export interface UserData {
   updatedAt?: any;
 }
 
+// Type for sign-in context
+export type SignInContext = 'member' | 'admin';
+
+// Admin email list
+const ADMIN_EMAILS = ['cshantery7@gmail.com', 'testguy123@gmail.com', 'testadmin1@gmail.com'];
+
+// Check if user is admin
+export function isAdmin(email: string | null): boolean {
+  if (!email) return false;
+  return ADMIN_EMAILS.includes(email);
+}
+
 // Create a new user account
 export async function signUpUser(
   email: string, 
@@ -63,10 +75,36 @@ export async function signInUser(email: string, password: string): Promise<User>
   }
 }
 
+// Sign in user with context validation
+export async function signInUserWithContext(
+  email: string, 
+  password: string, 
+  context: SignInContext
+): Promise<User> {
+  try {
+    // First check if it's admin portal and user is not admin
+    if (context === 'admin' && !isAdmin(email)) {
+      throw new Error('Admin not recognized. Please go to member sign in.');
+    }
+
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    
+    // Store the sign-in context in localStorage
+    localStorage.setItem('signInContext', context);
+    
+    return userCredential.user;
+  } catch (error: any) {
+    console.error('Error signing in:', error);
+    throw new Error(error.message || 'Failed to sign in');
+  }
+}
+
 // Sign out current user
 export async function signOutUser(): Promise<void> {
   try {
     await signOut(auth);
+    // Clear sign-in context when signing out
+    localStorage.removeItem('signInContext');
     console.log('User signed out successfully');
   } catch (error: any) {
     console.error('Error signing out:', error);
@@ -116,5 +154,18 @@ export async function updateUserProfile(userId: string, userData: Partial<UserDa
   } catch (error: any) {
     console.error('Error updating user profile:', error);
     throw new Error('Failed to update profile');
+  }
+}
+
+// Get current sign-in context
+export function getSignInContext(): SignInContext | null {
+  if (typeof window === 'undefined') return null;
+  return localStorage.getItem('signInContext') as SignInContext | null;
+}
+
+// Set sign-in context
+export function setSignInContext(context: SignInContext): void {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('signInContext', context);
   }
 } 

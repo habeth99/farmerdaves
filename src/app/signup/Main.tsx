@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { signUpUser } from '../../utils/authService';
+import { signUpUser, setSignInContext } from '../../utils/authService';
 
 export default function Main() {
   const [email, setEmail] = useState('');
@@ -58,6 +58,9 @@ export default function Main() {
       // Create user account with Firebase Auth and store in Firestore
       const user = await signUpUser(email, password, fullName, phoneNumber, birthdate);
       console.log('User created successfully:', user);
+      
+      // Set sign-in context to member for new users
+      setSignInContext('member');
       
       // Redirect to dashboard after successful signup
       router.push('/dashboard');

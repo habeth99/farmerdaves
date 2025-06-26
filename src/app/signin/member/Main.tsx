@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { signInUserWithContext } from '../../utils/authService';
+import { signInUserWithContext } from '../../../utils/authService';
 
 export default function Main() {
   const [email, setEmail] = useState('');
@@ -33,26 +33,26 @@ export default function Main() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-green-50 to-green-100 dark:from-[var(--bg-primary)] dark:to-[var(--bg-accent)] p-8">
-      <div className="bg-white dark:bg-[var(--bg-secondary)] rounded-lg shadow-xl p-8 w-full max-w-md border dark:border-[var(--border-color)]">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-green-50 to-green-100 p-8">
+      <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-green-800 dark:text-[var(--text-primary)] mb-2">
+          <h1 className="text-3xl font-bold text-green-800 mb-2">
             Member Sign In
           </h1>
-          <p className="text-green-600 dark:text-[var(--text-secondary)]">
+          <p className="text-green-600">
             Welcome back to Farmer Dave's
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {error && (
-            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 px-4 py-3 rounded-md text-sm">
+            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-sm">
               {error}
             </div>
           )}
           
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-[var(--text-primary)] mb-2">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
               Email
             </label>
             <input
@@ -61,13 +61,13 @@ export default function Main() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 dark:border-[var(--border-color)] rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white dark:bg-[var(--bg-primary)] text-gray-900 dark:text-[var(--text-primary)]"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               placeholder="Enter your email"
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-[var(--text-primary)] mb-2">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
               Password
             </label>
             <input
@@ -76,7 +76,7 @@ export default function Main() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 dark:border-[var(--border-color)] rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white dark:bg-[var(--bg-primary)] text-gray-900 dark:text-[var(--text-primary)]"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               placeholder="Enter your password"
             />
           </div>
@@ -84,23 +84,23 @@ export default function Main() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-green-600 hover:bg-green-700 dark:bg-[var(--color-borneo)] dark:hover:bg-[var(--color-pine)] disabled:bg-green-400 dark:disabled:bg-[var(--color-sage)] disabled:cursor-not-allowed text-white font-semibold py-3 px-4 rounded-md transition-colors duration-200 shadow-lg hover:shadow-xl"
+            className="w-full bg-green-600 hover:bg-green-700 disabled:bg-green-400 disabled:cursor-not-allowed text-white font-semibold py-3 px-4 rounded-md transition-colors duration-200 shadow-lg hover:shadow-xl"
           >
             {loading ? 'Signing In...' : 'Sign In'}
           </button>
         </form>
 
         <div className="mt-6 text-center">
-          <p className="text-gray-600 dark:text-[var(--text-secondary)]">
+          <p className="text-gray-600">
             Don't have an account?{' '}
-            <Link href="/signup" className="text-green-600 dark:text-[var(--color-borneo)] hover:text-green-700 dark:hover:text-[var(--color-pine)] font-semibold">
+            <Link href="/signup" className="text-green-600 hover:text-green-700 font-semibold">
               Sign Up
             </Link>
           </p>
         </div>
 
         <div className="mt-4 text-center">
-          <Link href="/user-selection" className="text-green-600 dark:text-[var(--color-borneo)] hover:text-green-700 dark:hover:text-[var(--color-pine)] text-sm">
+          <Link href="/user-selection" className="text-green-600 hover:text-green-700 text-sm">
             ← Back to User Selection
           </Link>
         </div>

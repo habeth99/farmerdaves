@@ -95,7 +95,9 @@ export default function Profile() {
   // Format birthdate for display
   const formatBirthdate = (birthdate?: string) => {
     if (!birthdate) return '';
-    const date = new Date(birthdate);
+    // Parse date components directly to avoid timezone issues
+    const [year, month, day] = birthdate.split('-');
+    const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
     return date.toLocaleDateString('en-US', { 
       year: 'numeric', 
       month: 'long', 
@@ -232,9 +234,9 @@ export default function Profile() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-100 p-4 md:p-8">
+      <div className="min-h-screen bg-[var(--background)] p-4 md:p-8">
         <div className="max-w-3xl mx-auto">
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-[var(--color-sage)] rounded-lg shadow-2xl p-6">
             <div className="animate-pulse">
               <div className="flex items-center mb-6">
                 <div className="w-20 h-20 bg-gray-200 rounded-full mr-4"></div>
@@ -261,15 +263,15 @@ export default function Profile() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-100 p-4 md:p-8">
+      <div className="min-h-screen bg-[var(--background)] p-4 md:p-8">
         <div className="max-w-3xl mx-auto">
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-[var(--color-sage)] rounded-lg shadow-2xl p-6">
             <div className="text-center">
               <h1 className="text-2xl font-bold text-red-600 mb-4">Error</h1>
-              <p className="text-gray-600">{error}</p>
+              <p className="text-[var(--color-pine)]">{error}</p>
               <button 
                 onClick={() => window.location.reload()} 
-                className="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+                className="mt-4 px-4 py-2 bg-[var(--color-borneo)] text-[var(--color-stone)] rounded hover:bg-[var(--color-pine)] transition-colors duration-200"
               >
                 Try Again
               </button>
@@ -281,16 +283,16 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-100 p-4 md:p-8">
+    <div className="min-h-screen bg-[var(--background)] p-4 md:p-8">
       <div className="max-w-3xl mx-auto">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-green-800">Profile</h1>
+          <h1 className="text-3xl font-bold text-[var(--color-borneo)]">Profile</h1>
           <div className="flex gap-2">
             {isEditing && (
               <button
                 onClick={handleEditToggle}
                 disabled={isSaving}
-                className="px-4 py-2 rounded-md font-medium bg-gray-500 hover:bg-gray-600 text-white transition-colors duration-200 disabled:cursor-not-allowed"
+                className="px-4 py-2 rounded-md font-medium bg-gray-500 hover:bg-gray-600 text-[var(--color-stone)] transition-colors duration-200 disabled:cursor-not-allowed"
               >
                 Cancel
               </button>
@@ -300,8 +302,8 @@ export default function Profile() {
               disabled={isSaving}
               className={`px-4 py-2 rounded-md font-medium transition-colors duration-200 ${
                 isEditing
-                  ? 'bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white'
-                  : 'bg-blue-600 hover:bg-blue-700 text-white'
+                  ? 'bg-[var(--color-borneo)] hover:bg-[var(--color-pine)] disabled:bg-[var(--color-box)] text-[var(--color-stone)]'
+                  : 'bg-[var(--color-borneo)] hover:bg-[var(--color-pine)] text-[var(--color-stone)]'
               } disabled:cursor-not-allowed`}
             >
               {isSaving ? 'Saving...' : isEditing ? 'Save Changes' : 'Edit Profile'}
@@ -309,72 +311,72 @@ export default function Profile() {
           </div>
         </div>
         
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-[var(--color-sage)] rounded-lg shadow-2xl p-6">
           <div className="flex items-center mb-6">
-            <div className="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mr-4">
+            <div className="w-20 h-20 bg-[var(--color-borneo)] rounded-full flex items-center justify-center text-[var(--color-stone)] text-2xl font-bold mr-4">
               {getInitials(userData?.fullName)}
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-green-800">
+              <h2 className="text-2xl font-bold text-[var(--color-borneo)]">
                 {userData?.fullName || 'User'}
               </h2>
-              <p className="text-green-600">Professional Farmer & Bigfoot Enthusiast</p>
+              <p className="text-[var(--color-pine)]">Professional Farmer & Bigfoot Enthusiast</p>
             </div>
           </div>
           
           <div>
-            <h3 className="text-xl font-semibold text-green-800 mb-4">Personal Information</h3>
+            <h3 className="text-xl font-semibold text-[var(--color-borneo)] mb-4">Personal Information</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
               <div>
-                <label className="block text-sm font-medium text-green-700 mb-1">Name</label>
+                <label className="block text-sm font-medium text-[var(--color-pine)] mb-1">Name</label>
                 {isEditing ? (
                   <input
                     type="text"
                     value={editForm.fullName}
                     onChange={(e) => handleInputChange('fullName', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-[var(--color-pine)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-borneo)] focus:border-transparent bg-[var(--color-stone)] text-[var(--color-borneo)]"
                     placeholder="Enter your full name"
                   />
                 ) : (
-                  <p className="text-green-800 py-2">{userData?.fullName || ''}</p>
+                  <p className="text-[var(--color-borneo)] py-2">{userData?.fullName || ''}</p>
                 )}
               </div>
-              <div>
-                <label className="block text-sm font-medium text-green-700 mb-1">Email</label>
+                              <div>
+                <label className="block text-sm font-medium text-[var(--color-pine)] mb-1">Email</label>
                 {isEditing ? (
                   <input
                     type="email"
                     value={editForm.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-[var(--color-pine)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-borneo)] focus:border-transparent bg-[var(--color-stone)] text-[var(--color-borneo)]"
                     placeholder="Enter your email"
                   />
                 ) : (
-                  <p className="text-green-800 py-2">{userData?.email || ''}</p>
+                  <p className="text-[var(--color-borneo)] py-2">{userData?.email || ''}</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-green-700 mb-1">Phone Number</label>
+                <label className="block text-sm font-medium text-[var(--color-pine)] mb-1">Phone Number</label>
                 {isEditing ? (
                   <input
                     type="tel"
                     value={editForm.phoneNumber}
                     onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-[var(--color-pine)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-borneo)] focus:border-transparent bg-[var(--color-stone)] text-[var(--color-borneo)]"
                     placeholder="(555) 123-4567"
                   />
                 ) : (
-                  <p className="text-green-800 py-2">{formatPhoneNumber(userData?.phoneNumber || '')}</p>
+                  <p className="text-[var(--color-borneo)] py-2">{formatPhoneNumber(userData?.phoneNumber || '')}</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-green-700 mb-1">Birthday</label>
+                <label className="block text-sm font-medium text-[var(--color-pine)] mb-1">Birthday</label>
                 {isEditing ? (
                   <div className="grid grid-cols-3 gap-2">
                     <select
                       value={editForm.birthMonth}
                       onChange={(e) => handleInputChange('birthMonth', e.target.value)}
-                      className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      className="px-3 py-2 border border-[var(--color-pine)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-borneo)] focus:border-transparent bg-[var(--color-stone)] text-[var(--color-borneo)]"
                     >
                       <option value="">Month</option>
                       {months.map((month) => (
@@ -386,7 +388,7 @@ export default function Profile() {
                     <select
                       value={editForm.birthDay}
                       onChange={(e) => handleInputChange('birthDay', e.target.value)}
-                      className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      className="px-3 py-2 border border-[var(--color-pine)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-borneo)] focus:border-transparent bg-[var(--color-stone)] text-[var(--color-borneo)]"
                     >
                       <option value="">Day</option>
                       {days.map((day) => (
@@ -398,7 +400,7 @@ export default function Profile() {
                     <select
                       value={editForm.birthYear}
                       onChange={(e) => handleInputChange('birthYear', e.target.value)}
-                      className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      className="px-3 py-2 border border-[var(--color-pine)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-borneo)] focus:border-transparent bg-[var(--color-stone)] text-[var(--color-borneo)]"
                     >
                       <option value="">Year</option>
                       {years.map((year) => (
@@ -409,12 +411,12 @@ export default function Profile() {
                     </select>
                   </div>
                 ) : (
-                  <p className="text-green-800 py-2">{formatBirthdate(userData?.birthdate)}</p>
+                  <p className="text-[var(--color-borneo)] py-2">{formatBirthdate(userData?.birthdate)}</p>
                 )}
               </div>
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-green-700 mb-1">Member Since</label>
-                <p className="text-green-800 py-2">{formatMemberSince(userData?.createdAt)}</p>
+                <label className="block text-sm font-medium text-[var(--color-pine)] mb-1">Member Since</label>
+                <p className="text-[var(--color-borneo)] py-2">{formatMemberSince(userData?.createdAt)}</p>
               </div>
             </div>
           </div>

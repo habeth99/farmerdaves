@@ -4,11 +4,21 @@
   --background: #DAD7CD;
   --foreground: #344E41;
 
+  /* Light mode - existing colors */
   --color-borneo: #344E41;
   --color-pine:   #3A5A40;
   --color-box:    #588157;
   --color-sage:   #A3B18A;
   --color-stone:  #DAD7CD;
+  
+  /* Light mode backgrounds and text */
+  --bg-primary: #DAD7CD;
+  --bg-secondary: #ffffff;
+  --bg-accent: #A3B18A;
+  --text-primary: #344E41;
+  --text-secondary: #3A5A40;
+  --text-light: #588157;
+  --border-color: #A3B18A;
 }
 
 @theme inline {
@@ -20,8 +30,24 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #1a1f1a;
+    --foreground: #DAD7CD;
+
+    /* Dark mode - inverted and adjusted colors */
+    --color-borneo: #A3B18A;  /* Lighter sage for main accent */
+    --color-pine:   #9CAF88;  /* Slightly lighter pine */
+    --color-box:    #7FA67C;  /* Lighter box green */
+    --color-sage:   #6B7D5B;  /* Darker sage for subtle elements */
+    --color-stone:  #2a312a;  /* Dark stone for backgrounds */
+    
+    /* Dark mode backgrounds and text */
+    --bg-primary: #1a1f1a;    /* Very dark green background */
+    --bg-secondary: #2a312a;  /* Dark stone for cards/sections */
+    --bg-accent: #344E41;     /* Original borneo for accents */
+    --text-primary: #DAD7CD;  /* Light stone for primary text */
+    --text-secondary: #A3B18A; /* Sage for secondary text */
+    --text-light: #9CAF88;    /* Light green for subtle text */
+    --border-color: #3A5A40;  /* Dark pine for borders */
   }
 }
 
