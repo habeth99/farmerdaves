@@ -57,6 +57,6 @@ export async function signOutUser(): Promise<void> {
     console.log('User signed out successfully');
   } catch (error: any) {
     console.error('Error signing out:', error);
-    throw new Error(error.message || 'Failed to sign out');
+    throw new Error('Failed to sign out');
   }
 } 

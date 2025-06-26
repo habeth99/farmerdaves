@@ -1,10 +1,8 @@
-import { redirect } from 'next/navigation';
-import Image from 'next/image';
 import Link from 'next/link';
 import { getAllItemsServerSide } from '../../../utils/itemService-server';
 import { Item } from '../../../../models/item';
 
-// This is now a server component that fetches data at build/request time
+// This is a server component that fetches data from Firestore
 export default async function Inventory() {
   let items: Item[] = [];
   
@@ -39,22 +37,31 @@ export default async function Inventory() {
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+          /* Horizontal Item Cards from Database */
+          <div className="space-y-4">
             {items.map((item) => (
-              <div key={item.id} className="bg-[var(--color-sage)] p-6 rounded-lg shadow-2xl flex flex-col items-center">
+              <div key={item.id} className="bg-[var(--color-sage)] p-6 rounded-lg shadow-2xl flex items-center gap-6">
+                {/* Image on the far left */}
                 <img
-                  src={item.image || '/bigfootimage.jpg'} // Fallback to bigfoot image if no image provided
+                  src={item.image || '/bigfootimage.jpg'}
                   alt={item.name}
-                  className="w-full aspect-square object-contain rounded-md mb-4 bg-white"
+                  className="w-24 h-24 object-contain rounded-md bg-white flex-shrink-0"
                 />
-                <div className="text-lg font-semibold text-[var(--color-borneo)] mb-1">{item.name}</div>
-                <div className="text-[var(--color-pine)] mb-1">{item.size}ft</div>
-                <div className="text-[var(--color-pine)] font-bold">${item.price}</div>
-                {item.createdAt && (
-                  <div className="text-sm text-[var(--color-pine)] mt-2 opacity-75">
-                    Added: {item.createdAt.toLocaleDateString()}
-                  </div>
-                )}
+                
+                {/* Name */}
+                <div className="text-xl font-semibold text-[var(--color-borneo)] min-w-0 flex-1">
+                  {item.name}
+                </div>
+                
+                {/* Height */}
+                <div className="text-lg text-[var(--color-pine)] font-medium">
+                  {item.size}ft
+                </div>
+                
+                {/* Price */}
+                <div className="text-lg text-[var(--color-pine)] font-bold">
+                  ${item.price.toLocaleString()}
+                </div>
               </div>
             ))}
           </div>
