@@ -40,29 +40,42 @@ export default async function Inventory() {
           /* Horizontal Item Cards from Database */
           <div className="space-y-4">
             {items.map((item) => (
-              <div key={item.id} className="bg-[var(--color-sage)] p-6 rounded-lg shadow-2xl flex items-center gap-6">
-                {/* Image on the far left */}
-                <img
-                  src={item.image || '/bigfootimage.jpg'}
-                  alt={item.name}
-                  className="w-24 h-24 object-contain rounded-md bg-white flex-shrink-0"
-                />
-                
-                {/* Name */}
-                <div className="text-xl font-semibold text-[var(--color-borneo)] min-w-0 flex-1">
-                  {item.name}
+              <Link 
+                key={item.id} 
+                href={`/dashboard/inventory/${item.id}`}
+                className="block bg-[var(--color-sage)] p-6 rounded-lg shadow-2xl hover:shadow-3xl transition-all duration-200 hover:scale-[1.02] cursor-pointer"
+              >
+                <div className="flex items-center gap-6">
+                  {/* Image on the far left */}
+                  <img
+                    src={item.image || '/bigfootimage.jpg'}
+                    alt={item.name}
+                    className="w-24 h-24 object-contain rounded-md bg-white flex-shrink-0"
+                  />
+                  
+                  {/* Name */}
+                  <div className="text-xl font-semibold text-[var(--color-borneo)] min-w-0 flex-1">
+                    {item.name}
+                  </div>
+                  
+                  {/* Height */}
+                  <div className="text-lg text-[var(--color-pine)] font-medium">
+                    {item.size}ft
+                  </div>
+                  
+                  {/* Price */}
+                  <div className="text-lg text-[var(--color-pine)] font-bold">
+                    ${item.price.toLocaleString()}
+                  </div>
+                  
+                  {/* Arrow indicator */}
+                  <div className="text-[var(--color-borneo)] flex-shrink-0">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
                 </div>
-                
-                {/* Height */}
-                <div className="text-lg text-[var(--color-pine)] font-medium">
-                  {item.size}ft
-                </div>
-                
-                {/* Price */}
-                <div className="text-lg text-[var(--color-pine)] font-bold">
-                  ${item.price.toLocaleString()}
-                </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}
