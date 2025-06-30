@@ -1,6 +1,8 @@
 import { 
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
   signOut,
   User,
   onAuthStateChanged
@@ -14,6 +16,7 @@ export interface UserData {
   fullName?: string;
   phoneNumber?: string;
   birthdate?: string;
+  userType?: 'member' | 'admin';
   createdAt?: any;
   updatedAt?: any;
 }
@@ -29,6 +32,9 @@ export function isAdmin(email: string | null): boolean {
   if (!email) return false;
   return ADMIN_EMAILS.includes(email);
 }
+
+// Initialize Google Auth Provider
+const googleProvider = new GoogleAuthProvider();
 
 // Create a new user account
 export async function signUpUser(
@@ -167,5 +173,44 @@ export function getSignInContext(): SignInContext | null {
 export function setSignInContext(context: SignInContext): void {
   if (typeof window !== 'undefined') {
     localStorage.setItem('signInContext', context);
+  }
+}
+
+// Sign in with Google
+export async function signInWithGoogle(): Promise<User> {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    const user = result.user;
+
+    // Check if user document already exists
+    const userDocRef = doc(db, 'users', user.uid);
+    const userDoc = await getDoc(userDocRef);
+
+    if (!userDoc.exists()) {
+      // Create new user document with member userType
+      const userData: UserData = {
+        email: user.email || '',
+        fullName: user.displayName || '',
+        userType: 'member', // All Google sign-ins get member status
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp()
+      };
+
+      await setDoc(userDocRef, userData);
+      console.log('New Google user created with member status:', user.uid);
+    } else {
+      // Update existing user's last sign-in time
+      await setDoc(userDocRef, {
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+    }
+
+    // Set sign-in context to member for Google users
+    setSignInContext('member');
+    
+    return user;
+  } catch (error: any) {
+    console.error('Error signing in with Google:', error);
+    throw new Error(error.message || 'Failed to sign in with Google');
   }
 } 
