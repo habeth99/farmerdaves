@@ -283,16 +283,16 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--background)] p-4 md:p-8">
+    <div className="min-h-screen bg-[var(--background)] p-4 sm:p-6 md:p-8">
       <div className="max-w-3xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-[var(--color-borneo)]">Profile</h1>
-          <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4 sm:gap-0">
+          <h1 className="text-2xl sm:text-3xl font-bold text-[var(--color-borneo)]">Profile</h1>
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-2">
             {isEditing && (
               <button
                 onClick={handleEditToggle}
                 disabled={isSaving}
-                className="px-4 py-2 rounded-md font-medium bg-gray-500 hover:bg-gray-600 text-[var(--color-stone)] transition-colors duration-200 disabled:cursor-not-allowed"
+                className="px-4 py-2.5 sm:py-2 rounded-md font-medium bg-gray-500 hover:bg-gray-600 text-[var(--color-stone)] transition-colors duration-200 disabled:cursor-not-allowed text-sm sm:text-base min-h-[44px] sm:min-h-auto"
               >
                 Cancel
               </button>
@@ -300,7 +300,7 @@ export default function Profile() {
             <button
               onClick={isEditing ? handleSave : handleEditToggle}
               disabled={isSaving}
-              className={`px-4 py-2 rounded-md font-medium transition-colors duration-200 ${
+              className={`px-4 py-2.5 sm:py-2 rounded-md font-medium transition-colors duration-200 text-sm sm:text-base min-h-[44px] sm:min-h-auto ${
                 isEditing
                   ? 'bg-[var(--color-borneo)] hover:bg-[var(--color-pine)] disabled:bg-[var(--color-box)] text-[var(--color-stone)]'
                   : 'bg-[var(--color-borneo)] hover:bg-[var(--color-pine)] text-[var(--color-stone)]'
@@ -311,22 +311,22 @@ export default function Profile() {
           </div>
         </div>
         
-        <div className="bg-[var(--color-sage)] rounded-lg shadow-2xl p-6">
-          <div className="flex items-center mb-6">
-            <div className="w-20 h-20 bg-[var(--color-borneo)] rounded-full flex items-center justify-center text-[var(--color-stone)] text-2xl font-bold mr-4">
+        <div className="bg-[var(--color-sage)] rounded-lg shadow-2xl p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center mb-6 gap-4 sm:gap-0">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-[var(--color-borneo)] rounded-full flex items-center justify-center text-[var(--color-stone)] text-lg sm:text-2xl font-bold sm:mr-4 mx-auto sm:mx-0">
               {getInitials(userData?.fullName)}
             </div>
-            <div>
-              <h2 className="text-2xl font-bold text-[var(--color-borneo)]">
+            <div className="text-center sm:text-left">
+              <h2 className="text-xl sm:text-2xl font-bold text-[var(--color-borneo)]">
                 {userData?.fullName || 'User'}
               </h2>
-              <p className="text-[var(--color-pine)]">Professional Farmer & Bigfoot Enthusiast</p>
+              <p className="text-sm sm:text-base text-[var(--color-pine)]">Professional Farmer & Bigfoot Enthusiast</p>
             </div>
           </div>
           
           <div>
-            <h3 className="text-xl font-semibold text-[var(--color-borneo)] mb-4">Personal Information</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+            <h3 className="text-lg sm:text-xl font-semibold text-[var(--color-borneo)] mb-4">Personal Information</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 lg:gap-x-8 gap-y-4">
               <div>
                 <label className="block text-sm font-medium text-[var(--color-pine)] mb-1">Name</label>
                 {isEditing ? (
