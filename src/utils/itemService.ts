@@ -45,6 +45,9 @@ export async function getAllItems(): Promise<Item[]> {
         name: data.name,
         price: data.price,
         size: data.size,
+        quantity: data.quantity || 0,
+        description: data.description,
+        image: data.image,
         createdAt: data.createdAt?.toDate(),
         updatedAt: data.updatedAt?.toDate()
       });
@@ -70,6 +73,9 @@ export async function getItemById(itemId: string): Promise<Item | null> {
         name: data.name,
         price: data.price,
         size: data.size,
+        quantity: data.quantity || 0,
+        description: data.description,
+        image: data.image,
         createdAt: data.createdAt?.toDate(),
         updatedAt: data.updatedAt?.toDate()
       };

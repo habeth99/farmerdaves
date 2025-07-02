@@ -54,36 +54,54 @@ export default function InventoryDetailsMain({ itemId }: InventoryDetailsMainPro
     return (
       <div className="min-h-screen bg-[var(--background)] p-8">
         <div className="max-w-4xl mx-auto">
-          <div className="mb-6">
+          {/* Navigation */}
+          <nav className="mb-6">
             <Link 
               href="/dashboard/inventory"
-              className="inline-flex items-center text-[var(--color-borneo)] hover:text-[var(--color-pine)] transition-colors duration-200"
+              className="inline-flex items-center text-[var(--color-borneo)] hover:text-[var(--color-pine)] transition-colors duration-200 text-sm font-medium"
             >
-              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
               Back to Inventory
             </Link>
-          </div>
+          </nav>
           
-          <div className="bg-[var(--color-sage)] p-8 rounded-lg shadow-md text-center">
-            <div className="mb-4">
-              <svg className="w-16 h-16 mx-auto text-[var(--color-pine)] opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
-              </svg>
+          <div className="bg-white rounded-lg shadow-lg p-8 text-center">
+            <div className="mb-6">
+              <div className="w-20 h-20 mx-auto bg-red-100 rounded-full flex items-center justify-center mb-4">
+                <svg className="w-10 h-10 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+              </div>
+              <h1 className="text-3xl font-bold text-[var(--color-borneo)] mb-2">
+                {error || 'Item Not Found'}
+              </h1>
+              <p className="text-[var(--color-pine)] text-lg">
+                The item you're looking for doesn't exist or has been removed.
+              </p>
             </div>
-            <h1 className="text-2xl font-bold text-[var(--color-borneo)] mb-2">
-              {error || 'Item Not Found'}
-            </h1>
-            <p className="text-[var(--color-pine)] mb-6">
-              The item you're looking for doesn't exist or has been removed.
-            </p>
-            <Link 
-              href="/dashboard/inventory"
-              className="bg-[var(--color-borneo)] hover:bg-[var(--color-pine)] text-[var(--color-stone)] font-semibold py-2 px-6 rounded-lg transition-colors duration-200 border-2 border-[var(--color-pine)]"
-            >
-              Back to Inventory
-            </Link>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link 
+                href="/dashboard/inventory"
+                className="inline-flex items-center justify-center bg-[var(--color-borneo)] hover:bg-[var(--color-pine)] text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 shadow-md"
+              >
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+                Back to Inventory
+              </Link>
+              <Link 
+                href="/dashboard/inventory/new-item"
+                className="inline-flex items-center justify-center bg-white hover:bg-gray-50 text-[var(--color-borneo)] font-semibold py-3 px-6 rounded-lg transition-colors duration-200 border-2 border-[var(--color-borneo)]"
+              >
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                Add New Item
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -92,103 +110,255 @@ export default function InventoryDetailsMain({ itemId }: InventoryDetailsMainPro
 
   return (
     <div className="min-h-screen bg-[var(--background)] p-8">
-      <div className="max-w-6xl mx-auto">
-        {/* Navigation */}
-        <div className="mb-6">
-          <Link 
-            href="/dashboard/inventory"
-            className="inline-flex items-center text-[var(--color-borneo)] hover:text-[var(--color-pine)] transition-colors duration-200"
-          >
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+      <div className="max-w-7xl mx-auto">
+        {/* Navigation with Breadcrumbs */}
+        <nav className="mb-8">
+          <div className="flex items-center space-x-2 text-sm">
+            <Link 
+              href="/dashboard"
+              className="text-[var(--color-pine)] hover:text-[var(--color-borneo)] transition-colors"
+            >
+              Dashboard
+            </Link>
+            <svg className="w-4 h-4 text-[var(--color-sage)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-            Back to Inventory
-          </Link>
-        </div>
+            <Link 
+              href="/dashboard/inventory"
+              className="text-[var(--color-pine)] hover:text-[var(--color-borneo)] transition-colors"
+            >
+              Inventory
+            </Link>
+            <svg className="w-4 h-4 text-[var(--color-sage)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+            <span className="text-[var(--color-borneo)] font-medium">{item.name}</span>
+          </div>
+        </nav>
 
-        {/* Item Details */}
-        <div className="bg-[var(--color-sage)] rounded-lg shadow-2xl overflow-hidden">
-          <div className="md:flex">
-            {/* Image Section */}
-            <div className="md:w-1/2 p-8 bg-white flex items-center justify-center">
-              <img
-                src={item.image || '/bigfootimage.jpg'}
-                alt={item.name}
-                className="max-w-full max-h-96 object-contain rounded-lg shadow-md"
-              />
-            </div>
-            
-            {/* Details Section */}
-            <div className="md:w-1/2 p-8">
-              <h1 className="text-4xl font-bold text-[var(--color-borneo)] mb-6">
-                {item.name}
-              </h1>
-              
-              <div className="space-y-6">
-                {/* Size */}
-                <div className="flex items-center">
-                  <div className="flex items-center justify-center w-12 h-12 bg-[var(--color-borneo)] rounded-lg mr-4">
-                    <svg className="w-6 h-6 text-[var(--color-stone)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-sm text-[var(--color-pine)] font-medium">Size</p>
-                    <p className="text-2xl font-bold text-[var(--color-borneo)]">{item.size} ft</p>
-                  </div>
-                </div>
-
-                {/* Price */}
-                <div className="flex items-center">
-                  <div className="flex items-center justify-center w-12 h-12 bg-[var(--color-borneo)] rounded-lg mr-4">
-                    <svg className="w-6 h-6 text-[var(--color-stone)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-sm text-[var(--color-pine)] font-medium">Price</p>
-                    <p className="text-3xl font-bold text-[var(--color-borneo)]">${item.price.toLocaleString()}</p>
-                  </div>
-                </div>
-
-                {/* Item ID */}
-                <div className="flex items-center">
-                  <div className="flex items-center justify-center w-12 h-12 bg-[var(--color-borneo)] rounded-lg mr-4">
-                    <svg className="w-6 h-6 text-[var(--color-stone)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-sm text-[var(--color-pine)] font-medium">Item ID</p>
-                    <p className="text-lg font-mono text-[var(--color-borneo)]">{item.id}</p>
-                  </div>
-                </div>
-
-                {/* Timestamps */}
-                {(item.createdAt || item.updatedAt) && (
-                  <div className="pt-4 border-t border-[var(--color-pine)] border-opacity-20">
-                    {item.createdAt && (
-                      <p className="text-sm text-[var(--color-pine)] mb-1">
-                        <span className="font-medium">Created:</span> {item.createdAt.toLocaleDateString()} at {item.createdAt.toLocaleTimeString()}
-                      </p>
-                    )}
-                    {item.updatedAt && (
-                      <p className="text-sm text-[var(--color-pine)]">
-                        <span className="font-medium">Updated:</span> {item.updatedAt.toLocaleDateString()} at {item.updatedAt.toLocaleTimeString()}
-                      </p>
-                    )}
-                  </div>
-                )}
+        {/* Main Content */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left Column - Image and Quick Actions */}
+          <div className="lg:col-span-1">
+            {/* Item Image */}
+            <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+              <h3 className="text-lg font-semibold text-[var(--color-borneo)] mb-4">Product Image</h3>
+              <div className="aspect-square bg-gray-50 rounded-lg overflow-hidden border-2 border-gray-200">
+                <img
+                  src={item.image || '/bigfootimage.jpg'}
+                  alt={item.name}
+                  className="w-full h-full object-contain"
+                />
               </div>
+            </div>
 
-              {/* Action Buttons */}
-              <div className="mt-8 flex gap-4">
+            {/* Quick Actions */}
+            <div className="bg-white rounded-lg shadow-lg p-6">
+              <h3 className="text-lg font-semibold text-[var(--color-borneo)] mb-4">Quick Actions</h3>
+              <div className="space-y-3">
+                <Link
+                  href={`/dashboard/inventory/edit/${item.id}`}
+                  className="w-full inline-flex items-center justify-center bg-[var(--color-borneo)] hover:bg-[var(--color-pine)] text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 shadow-md"
+                >
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                  Edit Item
+                </Link>
+                
                 <Link
                   href="/dashboard/inventory"
-                  className="flex-1 bg-[var(--color-borneo)] hover:bg-[var(--color-pine)] text-[var(--color-stone)] font-semibold py-3 px-6 rounded-lg transition-colors duration-200 border-2 border-[var(--color-pine)] text-center"
+                  className="w-full inline-flex items-center justify-center bg-white hover:bg-gray-50 text-[var(--color-borneo)] font-semibold py-3 px-4 rounded-lg transition-colors duration-200 border-2 border-[var(--color-borneo)]"
                 >
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
                   Back to Inventory
                 </Link>
+
+                <button
+                  onClick={() => {
+                    if (window.confirm('Are you sure you want to duplicate this item?')) {
+                      router.push(`/dashboard/inventory/new-item?duplicate=${item.id}`);
+                    }
+                  }}
+                  className="w-full inline-flex items-center justify-center bg-[var(--color-sage)] hover:bg-[var(--color-pine)] text-[var(--color-borneo)] hover:text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200"
+                >
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
+                  Duplicate Item
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column - Item Details */}
+          <div className="lg:col-span-2">
+            {/* Header Card */}
+            <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <h1 className="text-4xl font-bold text-[var(--color-borneo)] mb-2">
+                    {item.name}
+                  </h1>
+                  <div className="flex items-center gap-4">
+                    <span className="inline-flex items-center px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full">
+                      <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Active
+                    </span>
+                    <span className="text-sm text-[var(--color-pine)]">
+                      Item ID: <code className="bg-gray-100 px-2 py-1 rounded font-mono text-xs">{item.id}</code>
+                    </span>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm text-[var(--color-pine)] mb-1">Current Value</p>
+                  <p className="text-3xl font-bold text-[var(--color-borneo)]">
+                    ${item.price.toLocaleString()}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Details Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              {/* Product Information */}
+              <div className="bg-white rounded-lg shadow-lg p-6">
+                <h3 className="text-lg font-semibold text-[var(--color-borneo)] mb-4 flex items-center">
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Product Information
+                </h3>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span className="text-[var(--color-pine)] font-medium">Name</span>
+                    <span className="text-[var(--color-borneo)] font-semibold">{item.name}</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span className="text-[var(--color-pine)] font-medium">Size</span>
+                    <span className="inline-flex items-center px-2 py-1 bg-[var(--color-sage)] bg-opacity-20 text-[var(--color-borneo)] text-sm font-medium rounded-full">
+                      {item.size} ft
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span className="text-[var(--color-pine)] font-medium">Quantity</span>
+                    <span className={`inline-flex items-center px-2 py-1 text-sm font-medium rounded-full ${
+                      item.quantity === 0 
+                        ? 'bg-red-100 text-red-800' 
+                        : item.quantity < 10 
+                        ? 'bg-yellow-100 text-yellow-800' 
+                        : 'bg-green-100 text-green-800'
+                    }`}>
+                      {item.quantity}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span className="text-[var(--color-pine)] font-medium">Unit Price</span>
+                    <span className="text-xl font-bold text-[var(--color-borneo)]">
+                      ${item.price.toLocaleString()}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center py-2">
+                    <span className="text-[var(--color-pine)] font-medium">Total Value</span>
+                    <span className="text-xl font-bold text-[var(--color-borneo)]">
+                      ${(item.price * item.quantity).toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Metadata */}
+              <div className="bg-white rounded-lg shadow-lg p-6">
+                <h3 className="text-lg font-semibold text-[var(--color-borneo)] mb-4 flex items-center">
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Timestamps
+                </h3>
+                <div className="space-y-4">
+                  {item.createdAt && (
+                    <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                      <span className="text-[var(--color-pine)] font-medium">Created</span>
+                      <div className="text-right">
+                        <div className="text-[var(--color-borneo)] font-semibold">
+                          {item.createdAt.toLocaleDateString()}
+                        </div>
+                        <div className="text-sm text-[var(--color-pine)]">
+                          {item.createdAt.toLocaleTimeString()}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {item.updatedAt && (
+                    <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                      <span className="text-[var(--color-pine)] font-medium">Last Updated</span>
+                      <div className="text-right">
+                        <div className="text-[var(--color-borneo)] font-semibold">
+                          {item.updatedAt.toLocaleDateString()}
+                        </div>
+                        <div className="text-sm text-[var(--color-pine)]">
+                          {item.updatedAt.toLocaleTimeString()}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  <div className="flex justify-between items-center py-2">
+                    <span className="text-[var(--color-pine)] font-medium">Status</span>
+                    <span className="inline-flex items-center px-2 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full">
+                      <span className="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
+                      Active
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Description Section */}
+            {item.description && (
+              <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+                <h3 className="text-lg font-semibold text-[var(--color-borneo)] mb-4 flex items-center">
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
+                  </svg>
+                  Description
+                </h3>
+                <p className="text-[var(--color-pine)] leading-relaxed">
+                  {item.description}
+                </p>
+              </div>
+            )}
+
+            {/* Additional Information */}
+            <div className="bg-white rounded-lg shadow-lg p-6">
+              <h3 className="text-lg font-semibold text-[var(--color-borneo)] mb-4 flex items-center">
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                Item Analytics
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="text-center p-4 bg-[var(--color-sage)] bg-opacity-10 rounded-lg">
+                  <div className="text-2xl font-bold text-[var(--color-borneo)]">
+                    ${(item.price / item.size).toFixed(2)}
+                  </div>
+                  <div className="text-sm text-[var(--color-pine)]">Price per ft</div>
+                </div>
+                <div className="text-center p-4 bg-[var(--color-sage)] bg-opacity-10 rounded-lg">
+                  <div className="text-2xl font-bold text-[var(--color-borneo)]">
+                    {item.createdAt ? Math.floor((Date.now() - item.createdAt.getTime()) / (1000 * 60 * 60 * 24)) : 0}
+                  </div>
+                  <div className="text-sm text-[var(--color-pine)]">Days in inventory</div>
+                </div>
+                <div className="text-center p-4 bg-[var(--color-sage)] bg-opacity-10 rounded-lg">
+                  <div className="text-2xl font-bold text-[var(--color-borneo)]">
+                    {item.quantity === 0 ? 'Out of Stock' : item.quantity < 10 ? 'Low Stock' : 'In Stock'}
+                  </div>
+                  <div className="text-sm text-[var(--color-pine)]">Stock status</div>
+                </div>
               </div>
             </div>
           </div>
