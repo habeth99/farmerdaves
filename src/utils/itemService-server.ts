@@ -12,6 +12,8 @@ function transformFirestoreDocument(doc: any): Item {
     name: fields.name?.stringValue || '',
     price: parseInt(fields.price?.integerValue || fields.price?.doubleValue || '0'),
     size: parseInt(fields.size?.integerValue || fields.size?.doubleValue || '0'),
+    quantity: parseInt(fields.quantity?.integerValue || fields.quantity?.doubleValue || '0'),
+    description: fields.description?.stringValue || '',
     image: fields.image?.stringValue || '',
     createdAt: fields.createdAt?.timestampValue ? new Date(fields.createdAt.timestampValue) : undefined,
     updatedAt: fields.updatedAt?.timestampValue ? new Date(fields.updatedAt.timestampValue) : undefined

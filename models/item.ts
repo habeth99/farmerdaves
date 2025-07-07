@@ -12,6 +12,16 @@ export interface Item {
 
 export type CreateItemInput = Omit<Item, 'id' | 'createdAt' | 'updatedAt'>;
 
-export type UpdateItemInput = Partial<CreateItemInput> & {
+// More precise update type - only allow fields that can actually be updated
+export interface UpdateItemInput {
   id: string;
-};
+  name?: string;
+  price?: number;
+  size?: number;
+  quantity?: number;
+  description?: string;
+  image?: string;
+}
+
+// Helper type for creating clean update objects without undefined values
+export type CleanUpdateItemInput = UpdateItemInput & Record<string, any>;

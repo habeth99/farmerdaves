@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createItem } from '../../../../utils/itemService';
+import { CreateItemInput } from '../../../../../models/item';
 
 export default function NewItemMain() {
   const router = useRouter();
@@ -24,21 +25,32 @@ export default function NewItemMain() {
 
     try {
       // Convert form data to proper types for the database
-      const itemData = {
-        name: formData.name.trim(),
-        price: parseFloat(formData.price),
-        size: parseInt(formData.size),
-        quantity: parseInt(formData.quantity),
-        description: formData.description.trim() || undefined
-      };
+      const name = formData.name.trim();
+      const price = parseFloat(formData.price);
+      const size = parseInt(formData.size);
+      const quantity = parseInt(formData.quantity);
+      const description = formData.description.trim();
 
-      // Validate the data
-      if (!itemData.name || isNaN(itemData.price) || isNaN(itemData.size) || isNaN(itemData.quantity)) {
+      // Validate the data first
+      if (!name || isNaN(price) || isNaN(size) || isNaN(quantity)) {
         throw new Error('Please fill in all required fields with valid values');
       }
 
-      if (itemData.quantity < 0 || itemData.price < 0 || itemData.size < 0) {
+      if (quantity < 0 || price < 0 || size < 0) {
         throw new Error('Values cannot be negative');
+      }
+
+      // Build item data object with only defined values
+      const itemData: CreateItemInput = {
+        name,
+        price,
+        size,
+        quantity
+      };
+
+      // Only include optional fields if they have values
+      if (description) {
+        itemData.description = description;
       }
 
       // Create the item in the database

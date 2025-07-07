@@ -94,8 +94,13 @@ export async function updateItem(updateData: UpdateItemInput): Promise<void> {
     const { id, ...dataToUpdate } = updateData;
     const docRef = doc(db, COLLECTION_NAME, id);
     
+    // Filter out undefined values to prevent Firebase issues
+    const cleanData = Object.fromEntries(
+      Object.entries(dataToUpdate).filter(([_, value]) => value !== undefined)
+    );
+    
     await updateDoc(docRef, {
-      ...dataToUpdate,
+      ...cleanData,
       updatedAt: serverTimestamp()
     });
     

@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { getItemById, updateItem } from '../../../../../utils/itemService';
-import { Item } from '../../../../../../models/item';
+import { Item, UpdateItemInput } from '../../../../../../models/item';
 
 interface EditItemMainProps {
   itemId: string;
@@ -64,23 +64,38 @@ export default function EditItemMain({ itemId }: EditItemMainProps) {
 
     try {
       // Convert form data to proper types for the database
-      const updateData = {
-        id: itemId,
-        name: formData.name.trim(),
-        price: parseFloat(formData.price),
-        size: parseInt(formData.size),
-        quantity: parseInt(formData.quantity),
-        description: formData.description.trim() || undefined,
-        image: formData.image.trim() || undefined
-      };
+      const name = formData.name.trim();
+      const price = parseFloat(formData.price);
+      const size = parseInt(formData.size);
+      const quantity = parseInt(formData.quantity);
+      const description = formData.description.trim();
+      const image = formData.image.trim();
 
-      // Validate the data
-      if (!updateData.name || isNaN(updateData.price) || isNaN(updateData.size) || isNaN(updateData.quantity)) {
+      // Validate the data first
+      if (!name || isNaN(price) || isNaN(size) || isNaN(quantity)) {
         throw new Error('Please fill in all required fields with valid values');
       }
 
-      if (updateData.quantity < 0 || updateData.price < 0 || updateData.size < 0) {
+      if (quantity < 0 || price < 0 || size < 0) {
         throw new Error('Values cannot be negative');
+      }
+
+      // Build update data object with only defined values
+      const updateData: UpdateItemInput = {
+        id: itemId,
+        name,
+        price,
+        size,
+        quantity
+      };
+
+      // Only include optional fields if they have values
+      if (description) {
+        updateData.description = description;
+      }
+      
+      if (image) {
+        updateData.image = image;
       }
 
       // Update the item in the database
