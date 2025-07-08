@@ -8,9 +8,10 @@ import { Item, UpdateItemInput } from '../../../../../../models/item';
 
 interface EditItemMainProps {
   itemId: string;
+  initialItem: Item;
 }
 
-export default function EditItemMain({ itemId }: EditItemMainProps) {
+export default function EditItemMain({ itemId, initialItem }: EditItemMainProps) {
   const router = useRouter();
   const [item, setItem] = useState<Item | null>(null);
   const [formData, setFormData] = useState({
@@ -26,36 +27,23 @@ export default function EditItemMain({ itemId }: EditItemMainProps) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchItem = async () => {
-      try {
-        setIsLoading(true);
-        const fetchedItem = await getItemById(itemId);
-        if (!fetchedItem) {
-          setError('Item not found');
-          return;
-        }
-        
-        setItem(fetchedItem);
-        setFormData({
-          name: fetchedItem.name,
-          size: fetchedItem.size.toString(),
-          price: fetchedItem.price.toString(),
-          quantity: fetchedItem.quantity.toString(),
-          description: fetchedItem.description || '',
-          image: fetchedItem.image || ''
-        });
-      } catch (error) {
-        console.error('Error fetching item:', error);
-        setError('Failed to load item details');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (itemId) {
-      fetchItem();
+    // Use the initialItem that was fetched server-side
+    if (initialItem) {
+      setItem(initialItem);
+      setFormData({
+        name: initialItem.name,
+        size: initialItem.size.toString(),
+        price: initialItem.price.toString(),
+        quantity: initialItem.quantity.toString(),
+        description: initialItem.description || '',
+        image: initialItem.image || ''
+      });
+      setIsLoading(false);
+    } else {
+      setError('Item not found');
+      setIsLoading(false);
     }
-  }, [itemId]);
+  }, [initialItem]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

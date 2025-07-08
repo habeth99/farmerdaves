@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { Item } from '../../../../models/item';
 import { getAllItems, deleteItem } from '../../../utils/itemService';
 import { getCurrentUser, getSignInContext } from '../../../utils/authService';
+import { getTodayOrders } from '../../../utils/orderService';
+import { Order } from '../../../../models/order';
 
 interface InventoryMainProps {
   initialItems: Item[];
@@ -19,6 +21,7 @@ export default function InventoryMain({ initialItems, initialError }: InventoryM
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [todayOrders, setTodayOrders] = useState<Order[]>([]);
   const router = useRouter();
 
   // Filter items based on search term
@@ -46,6 +49,9 @@ export default function InventoryMain({ initialItems, initialError }: InventoryM
         
         const context = getSignInContext();
         setIsAdmin(context === 'admin');
+        
+        // Fetch today's orders
+        await fetchTodayOrders();
       } catch (error) {
         console.error('Error checking authentication:', error);
         router.push('/signin');
@@ -55,12 +61,23 @@ export default function InventoryMain({ initialItems, initialError }: InventoryM
     checkAuth();
   }, [router]);
 
+  const fetchTodayOrders = async () => {
+    try {
+      const orders = await getTodayOrders();
+      setTodayOrders(orders);
+    } catch (error) {
+      console.error('Error fetching today orders:', error);
+      // Don't set error state for orders, just log it
+    }
+  };
+
   const refreshItems = async () => {
     setLoading(true);
     setError(null);
     try {
       const updatedItems = await getAllItems();
       setItems(updatedItems);
+      await fetchTodayOrders(); // Also refresh today's orders
     } catch (err) {
       console.error('Error refreshing items:', err);
       setError('Failed to refresh inventory items');
@@ -194,36 +211,40 @@ export default function InventoryMain({ initialItems, initialError }: InventoryM
         )}
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] p-4 sm:p-6 rounded-lg shadow-md dark:border dark:border-[var(--border-color)]">
-            <p className="text-sm text-[var(--color-box)] dark:text-[var(--text-secondary)] mb-2">
-              {searchTerm ? 'Filtered Items' : 'Total Items'}
-            </p>
-            <p className="text-2xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)]">{filteredItems.length}</p>
-          </div>
-
-          <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] p-4 sm:p-6 rounded-lg shadow-md dark:border dark:border-[var(--border-color)]">
-            <p className="text-sm text-[var(--color-box)] dark:text-[var(--text-secondary)] mb-2">
-              {searchTerm ? 'Filtered Quantity' : 'Total Quantity'}
-            </p>
+            <div className="flex items-center mb-2">
+              <svg className="w-5 h-5 text-red-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+              </svg>
+              <p className="text-sm text-[var(--color-box)] dark:text-[var(--text-secondary)]">Low Stock</p>
+            </div>
             <p className="text-2xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)]">
-              {filteredItems.reduce((sum, item) => sum + item.quantity, 0)}
+              {items.filter(item => item.quantity <= 5).length}
             </p>
           </div>
 
           <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] p-4 sm:p-6 rounded-lg shadow-md dark:border dark:border-[var(--border-color)]">
-            <p className="text-sm text-[var(--color-box)] dark:text-[var(--text-secondary)] mb-2">
-              {searchTerm ? 'Filtered Value' : 'Total Value'}
-            </p>
+            <div className="flex items-center mb-2">
+              <svg className="w-5 h-5 text-[var(--color-sage)] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+              </svg>
+              <p className="text-sm text-[var(--color-box)] dark:text-[var(--text-secondary)]">Total Inventory</p>
+            </div>
             <p className="text-2xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)]">
-              {formatPrice(filteredItems.reduce((sum, item) => sum + (item.price * item.quantity), 0))}
+              {items.reduce((sum, item) => sum + item.quantity, 0)} items
             </p>
           </div>
 
           <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] p-4 sm:p-6 rounded-lg shadow-md dark:border dark:border-[var(--border-color)]">
-            <p className="text-sm text-[var(--color-box)] dark:text-[var(--text-secondary)] mb-2">Low Stock</p>
+            <div className="flex items-center mb-2">
+              <svg className="w-5 h-5 text-[var(--color-borneo)] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+              </svg>
+              <p className="text-sm text-[var(--color-box)] dark:text-[var(--text-secondary)]">Orders Today</p>
+            </div>
             <p className="text-2xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)]">
-              {filteredItems.filter(item => item.quantity <= 5).length}
+              {todayOrders.length}
             </p>
           </div>
         </div>
