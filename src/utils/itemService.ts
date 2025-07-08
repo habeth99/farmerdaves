@@ -8,7 +8,9 @@ import {
   deleteDoc,
   serverTimestamp,
   query,
-  orderBy
+  orderBy,
+  where,
+  QueryConstraint
 } from 'firebase/firestore';
 import { db } from './firebase';
 import { Item, CreateItemInput, UpdateItemInput } from '../../models/item';
@@ -57,6 +59,49 @@ export async function getAllItems(): Promise<Item[]> {
   } catch (error) {
     console.error('Error getting items: ', error);
     throw new Error('Failed to fetch items');
+  }
+}
+
+// Search items by name (server-side Firestore query)
+export async function searchItems(searchTerm: string): Promise<Item[]> {
+  try {
+    if (!searchTerm.trim()) {
+      return await getAllItems();
+    }
+
+    // Convert search term for Firestore
+    const searchTermLower = searchTerm.toLowerCase();
+    const searchTermEnd = searchTermLower + '\uf8ff'; // Unicode character for range queries
+    
+    const constraints: QueryConstraint[] = [
+      where('name', '>=', searchTermLower),
+      where('name', '<=', searchTermEnd),
+      orderBy('name')
+    ];
+    
+    const q = query(collection(db, COLLECTION_NAME), ...constraints);
+    const querySnapshot = await getDocs(q);
+    
+    const items: Item[] = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      items.push({
+        id: doc.id,
+        name: data.name,
+        price: data.price,
+        size: data.size,
+        quantity: data.quantity || 0,
+        description: data.description,
+        image: data.image,
+        createdAt: data.createdAt?.toDate(),
+        updatedAt: data.updatedAt?.toDate()
+      });
+    });
+    
+    return items;
+  } catch (error) {
+    console.error('Error searching items: ', error);
+    throw new Error('Failed to search items');
   }
 }
 

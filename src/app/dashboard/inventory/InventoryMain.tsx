@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Item } from '../../../../models/item';
@@ -18,7 +18,22 @@ export default function InventoryMain({ initialItems, initialError }: InventoryM
   const [error, setError] = useState<string | null>(initialError);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter();
+
+  // Filter items based on search term
+  const filteredItems = useMemo(() => {
+    if (!searchTerm) return items;
+    
+    const searchLower = searchTerm.toLowerCase();
+    return items.filter(item => 
+      item.name.toLowerCase().includes(searchLower) ||
+      (item.description && item.description.toLowerCase().includes(searchLower)) ||
+      item.size.toString().includes(searchLower) ||
+      item.price.toString().includes(searchLower) ||
+      item.quantity.toString().includes(searchLower)
+    );
+  }, [items, searchTerm]);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -85,46 +100,79 @@ export default function InventoryMain({ initialItems, initialError }: InventoryM
     <div className="min-h-screen bg-[var(--background)] p-4 sm:p-6 md:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8 gap-3 sm:gap-0">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6 sm:mb-8 gap-4">
           <div>
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)]">
               Inventory Management
             </h1>
             <p className="text-[var(--color-box)] dark:text-[var(--text-secondary)] mt-1">
-              Manage your farm's inventory and track your bigfoot statue collection
+              {searchTerm ? 
+                `Showing ${filteredItems.length} of ${items.length} items matching "${searchTerm}"` :
+                'Manage your farm\'s inventory and track your bigfoot statue collection'
+              }
             </p>
           </div>
-          {isAdmin && (
-            <div className="flex flex-col sm:flex-row gap-2">
-              <button
-                onClick={refreshItems}
-                disabled={loading}
-                className="bg-[var(--color-sage)] hover:bg-[var(--color-pine)] text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 disabled:opacity-50 flex items-center justify-center"
-              >
-                {loading ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                    Refreshing...
-                  </>
-                ) : (
-                  <>
-                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                    </svg>
-                    Refresh
-                  </>
-                )}
-              </button>
-              <Link href="/dashboard/inventory/new-item">
-                <button className="bg-[var(--color-borneo)] hover:bg-[var(--color-pine)] text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center w-full sm:w-auto">
-                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          
+          {/* Search and Actions */}
+          <div className="flex flex-col sm:flex-row gap-3 lg:items-center">
+            {/* Discrete Search Bar */}
+            <div className="relative flex-1 sm:max-w-xs">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg className="h-4 w-4 text-[var(--color-box)] dark:text-[var(--text-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+              <input
+                type="text"
+                placeholder="Search inventory..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="block w-full pl-9 pr-8 py-2 text-sm border border-[var(--color-sage)]/30 dark:border-[var(--border-color)] rounded-lg bg-white dark:bg-[var(--bg-primary)] text-[var(--color-borneo)] dark:text-[var(--text-primary)] placeholder-[var(--color-box)] dark:placeholder-[var(--text-secondary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-borneo)] focus:border-transparent transition-colors"
+              />
+              {searchTerm && (
+                <button
+                  onClick={() => setSearchTerm('')}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-[var(--color-box)] dark:text-[var(--text-secondary)] hover:text-[var(--color-borneo)] dark:hover:text-[var(--text-primary)]"
+                >
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
-                  Add New Item
                 </button>
-              </Link>
+              )}
             </div>
-          )}
+            
+            {isAdmin && (
+              <div className="flex flex-row gap-2">
+                <button
+                  onClick={refreshItems}
+                  disabled={loading}
+                  className="bg-[var(--color-sage)] hover:bg-[var(--color-pine)] text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 disabled:opacity-50 flex items-center justify-center"
+                >
+                  {loading ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                      Refreshing...
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                      </svg>
+                      Refresh
+                    </>
+                  )}
+                </button>
+                <Link href="/dashboard/inventory/new-item">
+                  <button className="bg-[var(--color-borneo)] hover:bg-[var(--color-pine)] text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center whitespace-nowrap">
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    Add New Item
+                  </button>
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Error Message */}
@@ -148,65 +196,35 @@ export default function InventoryMain({ initialItems, initialError }: InventoryM
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] p-4 sm:p-6 rounded-lg shadow-md dark:border dark:border-[var(--border-color)]">
-            <div className="flex items-center">
-              <div className="p-2 bg-[var(--color-borneo)] bg-opacity-10 rounded-full">
-                <svg className="w-6 h-6 text-[var(--color-borneo)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                </svg>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm text-[var(--color-box)] dark:text-[var(--text-secondary)]">Total Items</p>
-                <p className="text-2xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)]">{items.length}</p>
-              </div>
-            </div>
+            <p className="text-sm text-[var(--color-box)] dark:text-[var(--text-secondary)] mb-2">
+              {searchTerm ? 'Filtered Items' : 'Total Items'}
+            </p>
+            <p className="text-2xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)]">{filteredItems.length}</p>
           </div>
 
           <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] p-4 sm:p-6 rounded-lg shadow-md dark:border dark:border-[var(--border-color)]">
-            <div className="flex items-center">
-              <div className="p-2 bg-[var(--color-sage)] bg-opacity-10 rounded-full">
-                <svg className="w-6 h-6 text-[var(--color-sage)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
-                </svg>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm text-[var(--color-box)] dark:text-[var(--text-secondary)]">Total Quantity</p>
-                <p className="text-2xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)]">
-                  {items.reduce((sum, item) => sum + item.quantity, 0)}
-                </p>
-              </div>
-            </div>
+            <p className="text-sm text-[var(--color-box)] dark:text-[var(--text-secondary)] mb-2">
+              {searchTerm ? 'Filtered Quantity' : 'Total Quantity'}
+            </p>
+            <p className="text-2xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)]">
+              {filteredItems.reduce((sum, item) => sum + item.quantity, 0)}
+            </p>
           </div>
 
           <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] p-4 sm:p-6 rounded-lg shadow-md dark:border dark:border-[var(--border-color)]">
-            <div className="flex items-center">
-              <div className="p-2 bg-[var(--color-pine)] bg-opacity-10 rounded-full">
-                <svg className="w-6 h-6 text-[var(--color-pine)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                </svg>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm text-[var(--color-box)] dark:text-[var(--text-secondary)]">Total Value</p>
-                <p className="text-2xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)]">
-                  {formatPrice(items.reduce((sum, item) => sum + (item.price * item.quantity), 0))}
-                </p>
-              </div>
-            </div>
+            <p className="text-sm text-[var(--color-box)] dark:text-[var(--text-secondary)] mb-2">
+              {searchTerm ? 'Filtered Value' : 'Total Value'}
+            </p>
+            <p className="text-2xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)]">
+              {formatPrice(filteredItems.reduce((sum, item) => sum + (item.price * item.quantity), 0))}
+            </p>
           </div>
 
           <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] p-4 sm:p-6 rounded-lg shadow-md dark:border dark:border-[var(--border-color)]">
-            <div className="flex items-center">
-              <div className="p-2 bg-red-500 bg-opacity-10 rounded-full">
-                <svg className="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                </svg>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm text-[var(--color-box)] dark:text-[var(--text-secondary)]">Low Stock</p>
-                <p className="text-2xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)]">
-                  {items.filter(item => item.quantity <= 5).length}
-                </p>
-              </div>
-            </div>
+            <p className="text-sm text-[var(--color-box)] dark:text-[var(--text-secondary)] mb-2">Low Stock</p>
+            <p className="text-2xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)]">
+              {filteredItems.filter(item => item.quantity <= 5).length}
+            </p>
           </div>
         </div>
 
@@ -214,29 +232,47 @@ export default function InventoryMain({ initialItems, initialError }: InventoryM
         <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] rounded-lg shadow-md dark:border dark:border-[var(--border-color)] overflow-hidden">
           <div className="px-6 py-4 border-b border-[var(--color-sage)]/20 dark:border-[var(--border-color)]">
             <h2 className="text-xl font-semibold text-[var(--color-borneo)] dark:text-[var(--text-primary)]">
-              Inventory Items
+              {searchTerm ? `Search Results (${filteredItems.length})` : 'Inventory Items'}
             </h2>
           </div>
           
-          {items.length === 0 ? (
+          {filteredItems.length === 0 ? (
             <div className="p-8 text-center">
               <div className="w-16 h-16 mx-auto mb-4 bg-[var(--color-sage)]/10 rounded-full flex items-center justify-center">
-                <svg className="w-8 h-8 text-[var(--color-sage)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                </svg>
+                {searchTerm ? (
+                  <svg className="w-8 h-8 text-[var(--color-sage)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                ) : (
+                  <svg className="w-8 h-8 text-[var(--color-sage)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                  </svg>
+                )}
               </div>
               <h3 className="text-lg font-medium text-[var(--color-borneo)] dark:text-[var(--text-primary)] mb-2">
-                No items in inventory
+                {searchTerm ? 'No items found' : 'No items in inventory'}
               </h3>
               <p className="text-[var(--color-box)] dark:text-[var(--text-secondary)] mb-4">
-                Get started by adding your first inventory item.
+                {searchTerm 
+                  ? `No items match your search for "${searchTerm}". Try a different search term.`
+                  : 'Get started by adding your first inventory item.'
+                }
               </p>
-              {isAdmin && (
-                <Link href="/dashboard/inventory/new-item">
-                  <button className="bg-[var(--color-borneo)] hover:bg-[var(--color-pine)] text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200">
-                    Add First Item
-                  </button>
-                </Link>
+              {searchTerm ? (
+                <button
+                  onClick={() => setSearchTerm('')}
+                  className="bg-[var(--color-borneo)] hover:bg-[var(--color-pine)] text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200"
+                >
+                  Clear Search
+                </button>
+              ) : (
+                isAdmin && (
+                  <Link href="/dashboard/inventory/new-item">
+                    <button className="bg-[var(--color-borneo)] hover:bg-[var(--color-pine)] text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200">
+                      Add First Item
+                    </button>
+                  </Link>
+                )
               )}
             </div>
           ) : (
@@ -265,7 +301,7 @@ export default function InventoryMain({ initialItems, initialError }: InventoryM
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[var(--color-sage)]/20 dark:divide-[var(--border-color)]">
-                  {items.map((item) => (
+                  {filteredItems.map((item) => (
                     <tr key={item.id} className="hover:bg-[var(--color-sage)]/5 dark:hover:bg-[var(--bg-accent)] transition-colors">
                       <td className="px-6 py-4">
                         <div className="text-sm font-medium text-[var(--color-borneo)] dark:text-[var(--text-primary)]">
