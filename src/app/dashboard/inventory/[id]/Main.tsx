@@ -109,7 +109,7 @@ export default function InventoryDetailsMain({ itemId }: InventoryDetailsMainPro
   }
 
   return (
-    <div className="min-h-screen bg-[var(--background)] p-8">
+    <div className="min-h-screen bg-[var(--background)] pt-4 pr-4 pb-4 pl-3 sm:pt-6 sm:pr-6 sm:pb-6 sm:pl-4 md:pt-8 md:pr-8 md:pb-8 md:pl-4">
       <div className="max-w-7xl mx-auto">
         {/* Navigation with Breadcrumbs */}
         <nav className="mb-8">
@@ -234,10 +234,10 @@ export default function InventoryDetailsMain({ itemId }: InventoryDetailsMainPro
                     <span className="text-[var(--color-pine)] font-medium">Quantity</span>
                     <span className={`inline-flex items-center px-2 py-1 text-sm font-medium rounded-full ${
                       item.quantity === 0 
-                        ? 'bg-red-100 text-red-800' 
+                        ? 'bg-red-400 text-stone-50 dark:bg-red-800 dark:text-stone-300' 
                         : item.quantity < 10 
-                        ? 'bg-yellow-100 text-yellow-800' 
-                        : 'bg-green-100 text-green-800'
+                        ? 'bg-yellow-500 text-stone-50 dark:bg-yellow-800 dark:text-stone-300' 
+                        : 'bg-green-500 text-stone-50 dark:bg-green-800 dark:text-stone-300'
                     }`}>
                       {item.quantity}
                     </span>

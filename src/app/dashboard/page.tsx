@@ -46,10 +46,10 @@ export default function Dashboard() {
   // Admin Dashboard
   if (signInContext === 'admin') {
     return (
-      <div className="min-h-screen bg-[var(--background)] p-4 sm:p-6 md:p-8">
+      <div className="min-h-screen bg-[var(--background)] pt-4 pr-4 pb-4 pl-3 sm:pt-6 sm:pr-6 sm:pb-6 sm:pl-4 md:pt-8 md:pr-8 md:pb-8 md:pl-4">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8 gap-3 sm:gap-0">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)]">Admin Dashboard</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)] mt-2 sm:mt-1">Admin Dashboard</h1>
             <span className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium self-start sm:self-auto">Administrator</span>
           </div>
           

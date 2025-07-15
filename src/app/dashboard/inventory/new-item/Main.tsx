@@ -76,7 +76,7 @@ export default function NewItemMain() {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--background)] p-8">
+    <div className="min-h-screen bg-[var(--background)] pt-4 pr-4 pb-4 pl-3 sm:pt-6 sm:pr-6 sm:pb-6 sm:pl-4 md:pt-8 md:pr-8 md:pb-8 md:pl-4">
       <div className="max-w-4xl mx-auto">
         {/* Navigation */}
         <nav className="mb-6">

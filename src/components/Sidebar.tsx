@@ -3,47 +3,91 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { getCurrentUser, signOutUser, getSignInContext, isAdmin } from '../utils/authService';
+import { getUserCart, getCartSummary } from '../utils/cartService';
+import { Cart } from '../../models/cart';
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [isSigningOut, setIsSigningOut] = useState(false);
   const [signInContext, setSignInContext] = useState<'member' | 'admin' | null>(null);
+  const [cart, setCart] = useState<Cart | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [isHydrated, setIsHydrated] = useState(false);
   const router = useRouter();
+
+  // Mark when hydration is complete
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   useEffect(() => {
     const loadUser = async () => {
       try {
         const currentUser = await getCurrentUser();
         setUserEmail(currentUser?.email || null);
-        setSignInContext(getSignInContext());
+        setUserId(currentUser?.uid || null);
+        const context = getSignInContext();
+        setSignInContext(context);
+        
+        // Only load cart after hydration is complete and for members only
+        if (isHydrated && currentUser && context === 'member') {
+          try {
+            const userCart = await getUserCart(currentUser.uid);
+            setCart(userCart);
+          } catch (error) {
+            console.error('Error loading cart:', error);
+            setCart(null);
+          }
+        } else {
+          setCart(null);
+        }
       } catch (error) {
         console.error('Error loading user:', error);
         setUserEmail(null);
+        setUserId(null);
         setSignInContext(null);
+        setCart(null);
       }
     };
 
     loadUser();
-  }, []);
+  }, [isHydrated]);
 
   // Refresh user data when sidebar opens to ensure current auth state
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && isHydrated) {
       const refreshUser = async () => {
         try {
           const currentUser = await getCurrentUser();
           setUserEmail(currentUser?.email || null);
-          setSignInContext(getSignInContext());
+          setUserId(currentUser?.uid || null);
+          const context = getSignInContext();
+          setSignInContext(context);
+          
+          // Refresh cart for members only
+          if (currentUser && context === 'member') {
+            try {
+              const userCart = await getUserCart(currentUser.uid);
+              setCart(userCart);
+            } catch (error) {
+              console.error('Error refreshing cart:', error);
+              setCart(null);
+            }
+          } else {
+            setCart(null);
+          }
         } catch (error) {
           console.error('Error refreshing user on sidebar open:', error);
           setUserEmail(null);
+          setUserId(null);
           setSignInContext(null);
+          setCart(null);
         }
       };
       refreshUser();
     }
-  }, [isOpen]);
+  }, [isOpen, isHydrated]);
 
   // Close sidebar when clicking outside on mobile
   useEffect(() => {
@@ -120,10 +164,11 @@ export default function Sidebar() {
       >
         <div className="p-4 sm:p-6 h-full flex flex-col">
           {/* Header with Close Button */}
-          <div className="flex flex-col items-start mb-6 sm:mb-8">
+          <div className="flex flex-row justify-between items-center mb-6 sm:mb-8">
+            <span className="text-xl sm:text-2xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)]">Menu</span>
             <button
               onClick={() => setIsOpen(false)}
-              className="mb-3 p-2.5 sm:p-2 rounded bg-[var(--color-borneo)] text-[var(--color-stone)] hover:bg-[var(--color-pine)] transition-colors shadow-md"
+              className="p-2.5 sm:p-2 rounded bg-[var(--color-borneo)] text-[var(--color-stone)] hover:bg-[var(--color-pine)] transition-colors shadow-md"
               aria-label="Close menu"
             >
               {/* X Icon */}
@@ -131,7 +176,6 @@ export default function Sidebar() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            <span className="text-xl sm:text-2xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)]">Menu</span>
           </div>
           
           {/* Navigation Links */}
@@ -158,7 +202,12 @@ export default function Sidebar() {
                 className="text-[var(--color-borneo)] dark:text-[var(--text-primary)] hover:underline transition-colors py-2 px-1 text-base sm:text-lg min-h-[44px] flex items-center" 
                 onClick={() => setIsOpen(false)}
               >
-                Shop
+                <span>Shop</span>
+                {isHydrated && cart && getCartSummary(cart).totalItems > 0 && (
+                  <span className="ml-2 bg-[var(--color-borneo)] text-white text-xs font-bold py-1 px-2 rounded-full min-w-[20px] h-5 flex items-center justify-center">
+                    {getCartSummary(cart).totalItems}
+                  </span>
+                )}
               </Link>
             )}
             <Link 

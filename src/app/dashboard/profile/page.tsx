@@ -283,44 +283,50 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--background)] p-4 sm:p-6 md:p-8">
+    <div className="min-h-screen bg-[var(--background)] pt-4 pr-4 pb-4 pl-3 sm:pt-6 sm:pr-6 sm:pb-6 sm:pl-4 md:pt-8 md:pr-8 md:pb-8 md:pl-4">
       <div className="max-w-3xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4 sm:gap-0">
           <h1 className="text-2xl sm:text-3xl font-bold text-[var(--color-borneo)]">Profile</h1>
-          <div className="flex flex-col sm:flex-row gap-2 sm:gap-2">
-            {isEditing && (
-              <button
-                onClick={handleEditToggle}
-                disabled={isSaving}
-                className="px-4 py-2.5 sm:py-2 rounded-md font-medium bg-gray-500 hover:bg-gray-600 text-[var(--color-stone)] transition-colors duration-200 disabled:cursor-not-allowed text-sm sm:text-base min-h-[44px] sm:min-h-auto"
-              >
-                Cancel
-              </button>
-            )}
-            <button
-              onClick={isEditing ? handleSave : handleEditToggle}
-              disabled={isSaving}
-              className={`px-4 py-2.5 sm:py-2 rounded-md font-medium transition-colors duration-200 text-sm sm:text-base min-h-[44px] sm:min-h-auto ${
-                isEditing
-                  ? 'bg-[var(--color-borneo)] hover:bg-[var(--color-pine)] disabled:bg-[var(--color-box)] text-[var(--color-stone)]'
-                  : 'bg-[var(--color-borneo)] hover:bg-[var(--color-pine)] text-[var(--color-stone)]'
-              } disabled:cursor-not-allowed`}
-            >
-              {isSaving ? 'Saving...' : isEditing ? 'Save Changes' : 'Edit Profile'}
-            </button>
-          </div>
         </div>
         
         <div className="bg-[var(--color-sage)] rounded-lg shadow-2xl p-4 sm:p-6">
-          <div className="flex flex-col sm:flex-row sm:items-center mb-6 gap-4 sm:gap-0">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-[var(--color-borneo)] rounded-full flex items-center justify-center text-[var(--color-stone)] text-lg sm:text-2xl font-bold sm:mr-4 mx-auto sm:mx-0">
-              {getInitials(userData?.fullName)}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4 sm:gap-0">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-0">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-[var(--color-borneo)] rounded-full flex items-center justify-center text-[var(--color-stone)] text-lg sm:text-2xl font-bold sm:mr-4 mx-auto sm:mx-0">
+                {getInitials(userData?.fullName)}
+              </div>
+              <div className="text-center sm:text-left">
+                <h2 className="text-xl sm:text-2xl font-bold text-[var(--color-borneo)]">
+                  {userData?.fullName || 'User'}
+                </h2>
+                <p className="text-sm sm:text-base text-[var(--color-pine)]">Professional Farmer & Bigfoot Enthusiast</p>
+              </div>
             </div>
-            <div className="text-center sm:text-left">
-              <h2 className="text-xl sm:text-2xl font-bold text-[var(--color-borneo)]">
-                {userData?.fullName || 'User'}
-              </h2>
-              <p className="text-sm sm:text-base text-[var(--color-pine)]">Professional Farmer & Bigfoot Enthusiast</p>
+            
+            {/* Edit Button in Top Right Corner */}
+            <div className="flex justify-center sm:justify-end">
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-2">
+                {isEditing && (
+                  <button
+                    onClick={handleEditToggle}
+                    disabled={isSaving}
+                    className="px-4 py-2.5 sm:py-2 rounded-md font-medium bg-gray-500 hover:bg-gray-600 text-[var(--color-stone)] transition-colors duration-200 disabled:cursor-not-allowed text-sm sm:text-base min-h-[44px] sm:min-h-auto"
+                  >
+                    Cancel
+                  </button>
+                )}
+                <button
+                  onClick={isEditing ? handleSave : handleEditToggle}
+                  disabled={isSaving}
+                  className={`px-4 py-2.5 sm:py-2 rounded-md font-medium transition-colors duration-200 text-sm sm:text-base min-h-[44px] sm:min-h-auto ${
+                    isEditing
+                      ? 'bg-[var(--color-borneo)] hover:bg-[var(--color-pine)] disabled:bg-[var(--color-box)] text-[var(--color-stone)]'
+                      : 'bg-[var(--color-borneo)] hover:bg-[var(--color-pine)] text-[var(--color-stone)]'
+                  } disabled:cursor-not-allowed`}
+                >
+                  {isSaving ? 'Saving...' : isEditing ? 'Save Changes' : 'Edit Profile'}
+                </button>
+              </div>
             </div>
           </div>
           
@@ -419,6 +425,7 @@ export default function Profile() {
                 <p className="text-[var(--color-borneo)] py-2">{formatMemberSince(userData?.createdAt)}</p>
               </div>
             </div>
+
           </div>
         </div>
       </div>

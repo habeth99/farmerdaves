@@ -114,26 +114,20 @@ export default function InventoryMain({ initialItems, initialError }: InventoryM
   };
 
   return (
-    <div className="min-h-screen bg-[var(--background)] p-4 sm:p-6 md:p-8">
+    <div className="min-h-screen bg-[var(--background)] pt-4 pr-4 pb-4 pl-3 sm:pt-6 sm:pr-6 sm:pb-6 sm:pl-4 md:pt-8 md:pr-8 md:pb-8 md:pl-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6 sm:mb-8 gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)]">
+            <h1 className="text-2xl sm:text-3xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)] mt-2 sm:mt-1">
               Inventory Management
             </h1>
-            <p className="text-[var(--color-box)] dark:text-[var(--text-secondary)] mt-1">
-              {searchTerm ? 
-                `Showing ${filteredItems.length} of ${items.length} items matching "${searchTerm}"` :
-                'Manage your farm\'s inventory and track your bigfoot statue collection'
-              }
-            </p>
           </div>
           
           {/* Search and Actions */}
           <div className="flex flex-col sm:flex-row gap-3 lg:items-center">
             {/* Discrete Search Bar */}
-            <div className="relative flex-1 sm:max-w-xs">
+            <div className="relative w-full sm:w-auto sm:min-w-[300px]">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <svg className="h-4 w-4 text-[var(--color-box)] dark:text-[var(--text-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -144,7 +138,7 @@ export default function InventoryMain({ initialItems, initialError }: InventoryM
                 placeholder="Search inventory..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="block w-full pl-9 pr-8 py-2 text-sm border border-[var(--color-sage)]/30 dark:border-[var(--border-color)] rounded-lg bg-white dark:bg-[var(--bg-primary)] text-[var(--color-borneo)] dark:text-[var(--text-primary)] placeholder-[var(--color-box)] dark:placeholder-[var(--text-secondary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-borneo)] focus:border-transparent transition-colors"
+                className="block w-full pl-9 pr-8 py-2 text-sm border border-[var(--color-sage)]/70 dark:border-[var(--border-color)] hover:border-[var(--color-pine)] dark:hover:border-[var(--border-color)] rounded-lg bg-white dark:bg-[var(--bg-primary)] text-[var(--color-borneo)] dark:text-[var(--text-primary)] placeholder-[var(--color-box)] dark:placeholder-[var(--text-secondary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-borneo)] focus:border-transparent transition-colors"
               />
               {searchTerm && (
                 <button
@@ -163,7 +157,7 @@ export default function InventoryMain({ initialItems, initialError }: InventoryM
                 <button
                   onClick={refreshItems}
                   disabled={loading}
-                  className="bg-[var(--color-sage)] hover:bg-[var(--color-pine)] text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 disabled:opacity-50 flex items-center justify-center"
+                  className="bg-[var(--color-sage)] hover:bg-[var(--color-pine)] text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 disabled:opacity-50 flex items-center justify-center border border-transparent"
                 >
                   {loading ? (
                     <>
@@ -180,7 +174,7 @@ export default function InventoryMain({ initialItems, initialError }: InventoryM
                   )}
                 </button>
                 <Link href="/dashboard/inventory/new-item">
-                  <button className="bg-[var(--color-borneo)] hover:bg-[var(--color-pine)] text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center whitespace-nowrap">
+                  <button className="bg-[var(--color-borneo)] hover:bg-[var(--color-pine)] text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center whitespace-nowrap border border-transparent">
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
@@ -214,10 +208,10 @@ export default function InventoryMain({ initialItems, initialError }: InventoryM
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] p-4 sm:p-6 rounded-lg shadow-md dark:border dark:border-[var(--border-color)]">
             <div className="flex items-center mb-2">
-              <svg className="w-5 h-5 text-red-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <p className="text-sm text-[var(--color-box)] dark:text-[var(--text-secondary)] mr-2">Low Stock</p>
+              <svg className="w-5 h-5 text-red-500 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
               </svg>
-              <p className="text-sm text-[var(--color-box)] dark:text-[var(--text-secondary)]">Low Stock</p>
             </div>
             <p className="text-2xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)]">
               {items.filter(item => item.quantity <= 5).length}
@@ -226,10 +220,10 @@ export default function InventoryMain({ initialItems, initialError }: InventoryM
 
           <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] p-4 sm:p-6 rounded-lg shadow-md dark:border dark:border-[var(--border-color)]">
             <div className="flex items-center mb-2">
-              <svg className="w-5 h-5 text-[var(--color-sage)] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <p className="text-sm text-[var(--color-box)] dark:text-[var(--text-secondary)] mr-2">Total Inventory</p>
+              <svg className="w-5 h-5 text-[var(--color-sage)] dark:text-[var(--text-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
               </svg>
-              <p className="text-sm text-[var(--color-box)] dark:text-[var(--text-secondary)]">Total Inventory</p>
             </div>
             <p className="text-2xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)]">
               {items.reduce((sum, item) => sum + item.quantity, 0)} items
@@ -238,10 +232,10 @@ export default function InventoryMain({ initialItems, initialError }: InventoryM
 
           <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] p-4 sm:p-6 rounded-lg shadow-md dark:border dark:border-[var(--border-color)]">
             <div className="flex items-center mb-2">
-              <svg className="w-5 h-5 text-[var(--color-borneo)] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <p className="text-sm text-[var(--color-box)] dark:text-[var(--text-secondary)] mr-2">Orders Today</p>
+              <svg className="w-5 h-5 text-[var(--color-borneo)] dark:text-[var(--text-primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
               </svg>
-              <p className="text-sm text-[var(--color-box)] dark:text-[var(--text-secondary)]">Orders Today</p>
             </div>
             <p className="text-2xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)]">
               {todayOrders.length}
@@ -250,8 +244,8 @@ export default function InventoryMain({ initialItems, initialError }: InventoryM
         </div>
 
         {/* Inventory Table */}
-        <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] rounded-lg shadow-md dark:border dark:border-[var(--border-color)] overflow-hidden">
-          <div className="px-6 py-4 border-b border-[var(--color-sage)]/20 dark:border-[var(--border-color)]">
+        <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] rounded-lg shadow-md border border-[var(--color-sage)]/40 dark:border-[var(--border-color)] overflow-hidden">
+          <div className="px-6 py-4 border-b border-[var(--color-sage)]/30 dark:border-[var(--border-color)]">
             <h2 className="text-xl font-semibold text-[var(--color-borneo)] dark:text-[var(--text-primary)]">
               {searchTerm ? `Search Results (${filteredItems.length})` : 'Inventory Items'}
             </h2>
@@ -321,7 +315,7 @@ export default function InventoryMain({ initialItems, initialError }: InventoryM
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[var(--color-sage)]/20 dark:divide-[var(--border-color)]">
+                <tbody className="divide-y divide-[var(--color-sage)]/30 dark:divide-[var(--border-color)]">
                   {filteredItems.map((item) => (
                     <tr key={item.id} className="hover:bg-[var(--color-sage)]/5 dark:hover:bg-[var(--bg-accent)] transition-colors">
                       <td className="px-6 py-4">
@@ -338,10 +332,10 @@ export default function InventoryMain({ initialItems, initialError }: InventoryM
                       <td className="px-6 py-4">
                         <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
                           item.quantity <= 5 
-                            ? 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400' 
+                            ? 'bg-red-400 text-stone-50 dark:bg-red-800 dark:text-stone-300' 
                             : item.quantity <= 10
-                            ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
-                            : 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+                            ? 'bg-yellow-500 text-stone-50 dark:bg-yellow-800 dark:text-stone-300'
+                            : 'bg-green-500 text-stone-50 dark:bg-green-800 dark:text-stone-300'
                         }`}>
                           {item.quantity}
                         </span>
@@ -353,7 +347,7 @@ export default function InventoryMain({ initialItems, initialError }: InventoryM
                         <div className="flex space-x-2">
                           <Link href={`/dashboard/inventory/${item.id}`}>
                             <button 
-                              className="text-[var(--color-sage)] hover:text-[var(--color-pine)] transition-colors"
+                              className="text-[var(--color-sage)] hover:text-[var(--color-pine)] dark:text-[var(--text-secondary)] dark:hover:text-[var(--text-primary)] transition-colors"
                               title="View Details"
                             >
                               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -366,7 +360,7 @@ export default function InventoryMain({ initialItems, initialError }: InventoryM
                             <>
                               <Link href={`/dashboard/inventory/edit/${item.id}`}>
                                 <button 
-                                  className="text-[var(--color-borneo)] hover:text-[var(--color-pine)] transition-colors"
+                                  className="text-[var(--color-borneo)] hover:text-[var(--color-pine)] dark:text-[var(--text-primary)] dark:hover:text-[var(--text-secondary)] transition-colors"
                                   title="Edit Item"
                                 >
                                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -376,7 +370,7 @@ export default function InventoryMain({ initialItems, initialError }: InventoryM
                               </Link>
                               <button
                                 onClick={() => setDeleteConfirm(item.id!)}
-                                className="text-red-600 hover:text-red-800 transition-colors"
+                                className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 transition-colors"
                                 title="Delete Item"
                               >
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
