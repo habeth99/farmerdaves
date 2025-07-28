@@ -188,13 +188,22 @@ export default function Sidebar() {
               Home
             </Link>
             {signInContext === 'admin' && (
-              <Link 
-                href="/dashboard/inventory" 
-                className="text-[var(--color-borneo)] dark:text-[var(--text-primary)] hover:underline transition-colors py-2 px-1 text-base sm:text-lg min-h-[44px] flex items-center" 
-                onClick={() => setIsOpen(false)}
-              >
-                Inventory
-              </Link>
+              <>
+                <Link 
+                  href="/dashboard/inventory" 
+                  className="text-[var(--color-borneo)] dark:text-[var(--text-primary)] hover:underline transition-colors py-2 px-1 text-base sm:text-lg min-h-[44px] flex items-center" 
+                  onClick={() => setIsOpen(false)}
+                >
+                  Inventory
+                </Link>
+                <Link 
+                  href="/dashboard/orders" 
+                  className="text-[var(--color-borneo)] dark:text-[var(--text-primary)] hover:underline transition-colors py-2 px-1 text-base sm:text-lg min-h-[44px] flex items-center" 
+                  onClick={() => setIsOpen(false)}
+                >
+                  Orders
+                </Link>
+              </>
             )}
             {signInContext === 'member' && (
               <Link 

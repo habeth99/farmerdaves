@@ -136,7 +136,7 @@ export default function EditItemMain({ itemId, initialItem }: EditItemMainProps)
             </Link>
           </nav>
           
-          <div className="bg-white rounded-lg shadow-lg p-8 text-center">
+          <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] rounded-lg shadow-lg border border-[var(--color-sage)]/40 dark:border-[var(--border-color)] p-8 text-center">
             <div className="mb-6">
               <div className="w-20 h-20 mx-auto bg-red-100 rounded-full flex items-center justify-center mb-4">
                 <svg className="w-10 h-10 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -204,7 +204,7 @@ export default function EditItemMain({ itemId, initialItem }: EditItemMainProps)
         </nav>
 
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+        <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] rounded-lg shadow-lg border border-[var(--color-sage)]/40 dark:border-[var(--border-color)] p-6 mb-8">
           <div className="flex items-center">
             <div className="p-3 rounded-full bg-[var(--color-borneo)] bg-opacity-10 mr-4">
               <svg className="w-6 h-6 text-[var(--color-borneo)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -219,7 +219,7 @@ export default function EditItemMain({ itemId, initialItem }: EditItemMainProps)
         </div>
         
         {/* Form */}
-        <div className="bg-white rounded-lg shadow-lg p-6">
+        <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] rounded-lg shadow-lg border border-[var(--color-sage)]/40 dark:border-[var(--border-color)] p-6">
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
               <div className="p-4 bg-red-50 border border-red-200 rounded-lg">

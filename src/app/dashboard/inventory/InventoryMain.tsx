@@ -77,7 +77,7 @@ export default function InventoryMain({ initialItems, initialError }: InventoryM
     try {
       const updatedItems = await getAllItems();
       setItems(updatedItems);
-      await fetchTodayOrders(); // Also refresh today's orders
+        await fetchTodayOrders(); // Also refresh today's orders
     } catch (err) {
       console.error('Error refreshing items:', err);
       setError('Failed to refresh inventory items');

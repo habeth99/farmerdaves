@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCurrentUser, getSignInContext, isAdmin } from '../../utils/authService';
 import Link from 'next/link';
+import SalesChart from '../../components/SalesChart';
+import LowInventoryAlerts from '../../components/LowInventoryAlerts';
+import TaskList from '../../components/TaskList';
 
 export default function Dashboard() {
   const [userEmail, setUserEmail] = useState<string | null>(null);
@@ -47,62 +50,127 @@ export default function Dashboard() {
   if (signInContext === 'admin') {
     return (
       <div className="min-h-screen bg-[var(--background)] pt-4 pr-4 pb-4 pl-3 sm:pt-6 sm:pr-6 sm:pb-6 sm:pl-4 md:pt-8 md:pr-8 md:pb-8 md:pl-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8 gap-3 sm:gap-0">
-            <h1 className="text-2xl sm:text-3xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)] mt-2 sm:mt-1">Admin Dashboard</h1>
-            <span className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium self-start sm:self-auto">Administrator</span>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-            <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] p-4 sm:p-6 rounded-lg shadow-md dark:border dark:border-[var(--border-color)]">
-              <h3 className="text-lg sm:text-xl font-semibold text-[var(--color-borneo)] dark:text-[var(--text-primary)] mb-3">Sales Overview</h3>
-              <div className="space-y-2">
-                <p className="text-sm sm:text-base text-[var(--color-box)] dark:text-[var(--text-secondary)]">Total Sales: $12,450</p>
-                <p className="text-sm sm:text-base text-[var(--color-box)] dark:text-[var(--text-secondary)]">Orders Today: 23</p>
-                <p className="text-sm sm:text-base text-[var(--color-box)] dark:text-[var(--text-secondary)]">Revenue This Month: $45,230</p>
-              </div>
-            </div>
-            
-            <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] p-4 sm:p-6 rounded-lg shadow-md dark:border dark:border-[var(--border-color)]">
-              <h3 className="text-lg sm:text-xl font-semibold text-[var(--color-borneo)] dark:text-[var(--text-primary)] mb-3">Inventory Status</h3>
-              <div className="space-y-2">
-                <p className="text-sm sm:text-base text-[var(--color-box)] dark:text-[var(--text-secondary)]">• Bigfoot Statues: 12 in stock</p>
-                <p className="text-sm sm:text-base text-[var(--color-box)] dark:text-[var(--text-secondary)]">• Fresh Produce: 45 items</p>
-                <p className="text-sm sm:text-base text-[var(--color-box)] dark:text-[var(--text-secondary)]">• Low Stock Alerts: 3</p>
-              </div>
-            </div>
-            
-            <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] p-4 sm:p-6 rounded-lg shadow-md dark:border dark:border-[var(--border-color)]">
-              <h3 className="text-lg sm:text-xl font-semibold text-[var(--color-borneo)] dark:text-[var(--text-primary)] mb-3">Admin Tasks</h3>
-              <div className="space-y-2">
-                <p className="text-sm sm:text-base text-[var(--color-box)] dark:text-[var(--text-secondary)]">• Review pending orders</p>
-                <p className="text-sm sm:text-base text-[var(--color-box)] dark:text-[var(--text-secondary)]">• Update inventory</p>
-                <p className="text-sm sm:text-base text-[var(--color-box)] dark:text-[var(--text-secondary)]">• Process shipments</p>
-              </div>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-            <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] p-4 sm:p-6 rounded-lg shadow-md dark:border dark:border-[var(--border-color)]">
-              <h2 className="text-xl sm:text-2xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)] mb-4">Inventory Management</h2>
-              <p className="text-sm sm:text-base text-[var(--color-box)] dark:text-[var(--text-secondary)] mb-4">
-                Manage your farm's inventory, add new items, update stock levels, and track your famous bigfoot statue collection.
+        <div className="max-w-7xl mx-auto space-y-8">
+          {/* Header */}
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 gap-4">
+            <div>
+              <h1 className="text-3xl sm:text-4xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)]">
+                Admin Dashboard
+              </h1>
+              <p className="text-[var(--color-box)] dark:text-[var(--text-secondary)] mt-2">
+                Welcome back! Here's what's happening at Farmer Dave's today.
               </p>
-              <Link href="/dashboard/inventory">
-                <button className="bg-[var(--color-borneo)] hover:bg-[var(--color-pine)] text-[var(--color-stone)] font-semibold py-2.5 px-4 sm:py-2 sm:px-4 rounded-lg transition-colors duration-200 w-full sm:w-auto text-sm sm:text-base">
-                  Manage Inventory →
+            </div>
+            
+            <div className="flex items-center gap-4">
+              <span className="bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm font-medium">
+                Administrator
+              </span>
+              <div className="flex gap-2">
+                <Link
+                  href="/dashboard/inventory"
+                  className="bg-[var(--color-borneo)] hover:bg-[var(--color-pine)] text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center"
+                >
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                  </svg>
+                  Inventory
+                </Link>
+                <Link
+                  href="/dashboard/shop"
+                  className="bg-[var(--color-sage)] hover:bg-[var(--color-pine)] text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center"
+                >
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                  </svg>
+                  Shop
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Sales Chart - Top Section */}
+          <div className="w-full">
+            <SalesChart />
+          </div>
+
+          {/* Main Content Grid */}
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+            {/* Low Inventory Alerts - Left/Top */}
+            <div className="xl:col-span-2">
+              <LowInventoryAlerts />
+            </div>
+
+            {/* Task List - Right/Bottom */}
+            <div className="xl:col-span-1">
+              <TaskList />
+            </div>
+          </div>
+
+          {/* Quick Actions Footer */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] rounded-lg shadow-lg border border-[var(--color-sage)]/40 dark:border-[var(--border-color)] p-6">
+              <div className="flex items-center mb-4">
+                <div className="p-3 rounded-full bg-[var(--color-borneo)] bg-opacity-10 mr-4">
+                  <svg className="w-6 h-6 text-[var(--color-borneo)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-[var(--color-borneo)] dark:text-[var(--text-primary)] mb-1">
+                    Inventory Management
+                  </h3>
+                  <p className="text-sm text-[var(--color-box)] dark:text-[var(--text-secondary)]">
+                    Manage stock levels and add new products
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <Link
+                  href="/dashboard/inventory"
+                  className="flex-1 bg-[var(--color-borneo)] hover:bg-[var(--color-pine)] text-white text-center py-2 px-4 rounded-lg font-medium transition-colors duration-200"
+                >
+                  View Inventory
+                </Link>
+                <Link
+                  href="/dashboard/inventory/new-item"
+                  className="flex-1 bg-[var(--color-sage)] hover:bg-[var(--color-pine)] text-white text-center py-2 px-4 rounded-lg font-medium transition-colors duration-200"
+                >
+                  Add Item
+                </Link>
+              </div>
+            </div>
+            
+            <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] rounded-lg shadow-lg border border-[var(--color-sage)]/40 dark:border-[var(--border-color)] p-6">
+              <div className="flex items-center mb-4">
+                <div className="p-3 rounded-full bg-[var(--color-borneo)] bg-opacity-10 mr-4">
+                  <svg className="w-6 h-6 text-[var(--color-borneo)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-[var(--color-borneo)] dark:text-[var(--text-primary)] mb-1">
+                    Customer Experience
+                  </h3>
+                  <p className="text-sm text-[var(--color-box)] dark:text-[var(--text-secondary)]">
+                    Monitor sales and customer activity
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <Link
+                  href="/dashboard/shop"
+                  className="flex-1 bg-[var(--color-borneo)] hover:bg-[var(--color-pine)] text-white text-center py-2 px-4 rounded-lg font-medium transition-colors duration-200"
+                >
+                  View Shop
+                </Link>
+                <button
+                  className="flex-1 bg-[var(--color-sage)] hover:bg-[var(--color-pine)] text-white text-center py-2 px-4 rounded-lg font-medium transition-colors duration-200 opacity-50 cursor-not-allowed"
+                  disabled
+                >
+                  Orders (Soon)
                 </button>
-              </Link>
-            </div>
-            
-            <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] p-4 sm:p-6 rounded-lg shadow-md dark:border dark:border-[var(--border-color)]">
-              <h2 className="text-xl sm:text-2xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)] mb-4">User Management</h2>
-              <p className="text-sm sm:text-base text-[var(--color-box)] dark:text-[var(--text-secondary)] mb-4">
-                View customer accounts, manage member access, and monitor user activity across the platform.
-              </p>
-              <button className="bg-[var(--color-borneo)] hover:bg-[var(--color-pine)] text-[var(--color-stone)] font-semibold py-2.5 px-4 sm:py-2 sm:px-4 rounded-lg transition-colors duration-200 w-full sm:w-auto text-sm sm:text-base">
-                View Users →
-              </button>
+              </div>
             </div>
           </div>
         </div>
@@ -110,7 +178,7 @@ export default function Dashboard() {
     );
   }
 
-  // Member Dashboard
+  // Member Dashboard (unchanged)
   return (
     <div className="min-h-screen bg-[var(--background)]">
       {/* Header Section */}

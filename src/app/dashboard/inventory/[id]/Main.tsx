@@ -67,17 +67,17 @@ export default function InventoryDetailsMain({ itemId }: InventoryDetailsMainPro
             </Link>
           </nav>
           
-          <div className="bg-white rounded-lg shadow-lg p-8 text-center">
+          <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] rounded-lg shadow-lg border border-[var(--color-sage)]/40 dark:border-[var(--border-color)] p-8 text-center">
             <div className="mb-6">
               <div className="w-20 h-20 mx-auto bg-red-100 rounded-full flex items-center justify-center mb-4">
                 <svg className="w-10 h-10 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
                 </svg>
               </div>
-              <h1 className="text-3xl font-bold text-[var(--color-borneo)] mb-2">
+              <h1 className="text-3xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)] mb-2">
                 {error || 'Item Not Found'}
               </h1>
-              <p className="text-[var(--color-pine)] text-lg">
+              <p className="text-[var(--color-pine)] dark:text-[var(--text-secondary)] text-lg">
                 The item you're looking for doesn't exist or has been removed.
               </p>
             </div>
@@ -141,8 +141,8 @@ export default function InventoryDetailsMain({ itemId }: InventoryDetailsMainPro
           {/* Left Column - Image and Quick Actions */}
           <div className="lg:col-span-1">
             {/* Item Image */}
-            <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-              <h3 className="text-lg font-semibold text-[var(--color-borneo)] mb-4">Product Image</h3>
+            <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] rounded-lg shadow-lg border border-[var(--color-sage)]/40 dark:border-[var(--border-color)] p-6 mb-6">
+              <h3 className="text-lg font-semibold text-[var(--color-borneo)] dark:text-[var(--text-primary)] mb-4">Product Image</h3>
               <div className="aspect-square bg-gray-50 rounded-lg overflow-hidden border-2 border-gray-200">
                 <img
                   src={item.image || '/bigfootimage.jpg'}
@@ -153,8 +153,8 @@ export default function InventoryDetailsMain({ itemId }: InventoryDetailsMainPro
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h3 className="text-lg font-semibold text-[var(--color-borneo)] mb-4">Quick Actions</h3>
+            <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] rounded-lg shadow-lg border border-[var(--color-sage)]/40 dark:border-[var(--border-color)] p-6">
+              <h3 className="text-lg font-semibold text-[var(--color-borneo)] dark:text-[var(--text-primary)] mb-4">Quick Actions</h3>
               <div className="space-y-3">
                 <Link
                   href={`/dashboard/inventory/edit/${item.id}`}
@@ -168,7 +168,7 @@ export default function InventoryDetailsMain({ itemId }: InventoryDetailsMainPro
                 
                 <Link
                   href="/dashboard/inventory"
-                  className="w-full inline-flex items-center justify-center bg-white hover:bg-gray-50 text-[var(--color-borneo)] font-semibold py-3 px-4 rounded-lg transition-colors duration-200 border-2 border-[var(--color-borneo)]"
+                  className="w-full inline-flex items-center justify-center bg-[var(--color-sage)] hover:bg-[var(--color-pine)] text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 shadow-md"
                 >
                   <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -182,10 +182,10 @@ export default function InventoryDetailsMain({ itemId }: InventoryDetailsMainPro
           {/* Right Column - Item Details */}
           <div className="lg:col-span-2">
             {/* Header Card */}
-            <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] rounded-lg shadow-lg border border-[var(--color-sage)]/40 dark:border-[var(--border-color)] p-6 mb-6">
               <div className="flex items-start justify-between mb-4">
                 <div>
-                  <h1 className="text-4xl font-bold text-[var(--color-borneo)] mb-2">
+                  <h1 className="text-4xl font-bold text-[var(--color-borneo)] dark:text-[var(--text-primary)] mb-2">
                     {item.name}
                   </h1>
                   <div className="flex items-center gap-4">
@@ -195,8 +195,8 @@ export default function InventoryDetailsMain({ itemId }: InventoryDetailsMainPro
                       </svg>
                       Active
                     </span>
-                    <span className="text-sm text-[var(--color-pine)]">
-                      Item ID: <code className="bg-gray-100 px-2 py-1 rounded font-mono text-xs">{item.id}</code>
+                    <span className="text-sm text-[var(--color-pine)] dark:text-[var(--text-secondary)]">
+                      Item ID: <span className="font-mono text-xs">{item.id}</span>
                     </span>
                   </div>
                 </div>
@@ -212,8 +212,8 @@ export default function InventoryDetailsMain({ itemId }: InventoryDetailsMainPro
             {/* Details Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               {/* Product Information */}
-              <div className="bg-white rounded-lg shadow-lg p-6">
-                <h3 className="text-lg font-semibold text-[var(--color-borneo)] mb-4 flex items-center">
+              <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] rounded-lg shadow-lg border border-[var(--color-sage)]/40 dark:border-[var(--border-color)] p-6">
+                <h3 className="text-lg font-semibold text-[var(--color-borneo)] dark:text-[var(--text-primary)] mb-4 flex items-center">
                   <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
@@ -258,8 +258,8 @@ export default function InventoryDetailsMain({ itemId }: InventoryDetailsMainPro
               </div>
 
               {/* Metadata */}
-              <div className="bg-white rounded-lg shadow-lg p-6">
-                <h3 className="text-lg font-semibold text-[var(--color-borneo)] mb-4 flex items-center">
+              <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] rounded-lg shadow-lg border border-[var(--color-sage)]/40 dark:border-[var(--border-color)] p-6">
+                <h3 className="text-lg font-semibold text-[var(--color-borneo)] dark:text-[var(--text-primary)] mb-4 flex items-center">
                   <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
@@ -305,22 +305,22 @@ export default function InventoryDetailsMain({ itemId }: InventoryDetailsMainPro
 
             {/* Description Section */}
             {item.description && (
-              <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-                <h3 className="text-lg font-semibold text-[var(--color-borneo)] mb-4 flex items-center">
+              <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] rounded-lg shadow-lg border border-[var(--color-sage)]/40 dark:border-[var(--border-color)] p-6 mb-6">
+                <h3 className="text-lg font-semibold text-[var(--color-borneo)] dark:text-[var(--text-primary)] mb-4 flex items-center">
                   <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
                   </svg>
                   Description
                 </h3>
-                <p className="text-[var(--color-pine)] leading-relaxed">
+                <p className="text-[var(--color-pine)] dark:text-[var(--text-secondary)] leading-relaxed">
                   {item.description}
                 </p>
               </div>
             )}
 
             {/* Additional Information */}
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h3 className="text-lg font-semibold text-[var(--color-borneo)] mb-4 flex items-center">
+            <div className="bg-[var(--color-stone)] dark:bg-[var(--bg-secondary)] rounded-lg shadow-lg border border-[var(--color-sage)]/40 dark:border-[var(--border-color)] p-6">
+              <h3 className="text-lg font-semibold text-[var(--color-borneo)] dark:text-[var(--text-primary)] mb-4 flex items-center">
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>

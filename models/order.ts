@@ -1,9 +1,13 @@
 export interface Order {
   id?: string;
+  customerName: string;
   customerEmail: string;
+  customerPhone: string;
+  customerAddress: string;
   items: OrderItem[];
   totalAmount: number;
-  status: 'pending' | 'processing' | 'completed' | 'cancelled';
+  status: 'pending' | 'processing' | 'fulfilled' | 'cancelled';
+  description?: string;
   orderDate: Date;
   createdAt?: Date;
   updatedAt?: Date;
@@ -14,6 +18,7 @@ export interface OrderItem {
   itemName: string;
   quantity: number;
   price: number;
+  size: number;
   subtotal: number;
 }
 
